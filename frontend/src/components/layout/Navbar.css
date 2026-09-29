@@ -1,0 +1,272 @@
+.nav {
+  /* Fallback for engines without color-mix; the real fill is set below. */
+  --nav-pill-fill: var(--ghost-hover-bg);
+  --nav-sb: 0px;
+
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-nav);
+  height: var(--nav-h);
+  padding-right: var(--nav-sb);
+  /* Hide-on-scroll uses `translate` because motion owns `transform`. */
+  transition:
+    height 200ms var(--ease-out),
+    translate var(--dur-med) var(--ease-out);
+}
+
+@supports (background: color-mix(in oklab, red 10%, transparent)) {
+  .nav {
+    --nav-pill-fill: color-mix(in oklab, var(--primary) 10%, transparent);
+  }
+}
+
+.nav[data-compact] {
+  height: var(--nav-h-compact);
+}
+
+/* Background only appears once the bar is compact. */
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--nav-bg);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity var(--dur-med) var(--ease-out);
+  pointer-events: none;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav::before {
+    background: var(--bg);
+  }
+}
+.nav[data-compact]::before {
+  opacity: 1;
+}
+
+/* Progress */
+.nav__track {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: var(--border);
+  opacity: 0;
+  transition: opacity var(--dur-med) var(--ease-out);
+  pointer-events: none;
+}
+.nav[data-compact] .nav__track {
+  opacity: 1;
+}
+.nav__progress {
+  position: absolute;
+  inset: 0;
+  background: var(--accent-signal);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  will-change: transform;
+}
+@media (hover: hover) and (pointer: fine) and (min-width: 900px) {
+  .nav__track {
+    height: 2px;
+    background: transparent;
+    /* Keep the resting rule at 1px while the progress ink runs at 2px. */
+    box-shadow: inset 0 -1px 0 var(--border);
+  }
+}
+
+.nav[data-away] {
+  translate: 0 -100%;
+}
+
+/* Sheet open: the bar stays on top but lets clicks through. The trigger is hidden, not removed, so focus can return to it. */
+.nav[data-open] {
+  z-index: calc(var(--z-sheet) + 1);
+  pointer-events: none;
+}
+.nav[data-open]::before,
+.nav[data-open] .nav__track {
+  opacity: 0;
+}
+.nav[data-open] .nav__menu,
+.nav[data-open] .nav__cta {
+  visibility: hidden;
+}
+
+.nav__inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--s-4);
+  height: 100%;
+}
+
+/* Brand */
+.nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  color: var(--text);
+  border-radius: var(--r-sm);
+}
+.nav__logo {
+  color: var(--primary-display);
+  flex-shrink: 0;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.nav__wordmark {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 0.8rem;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  white-space: nowrap;
+}
+.nav__wordmark-tail {
+  color: var(--text-muted);
+}
+@media (hover: hover) {
+  .nav__brand:hover .nav__logo {
+    transform: rotate(90deg);
+  }
+}
+
+/* Links */
+.nav__links {
+  justify-self: center;
+  min-width: 0;
+}
+.nav__list {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.nav__item {
+  position: relative;
+  display: flex;
+}
+.nav__link {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--r-pill);
+  font-family: var(--font-label);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text-2);
+}
+/* Extends the 36px link to a 44px touch target. */
+.nav__link::before {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+}
+.nav__num {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.nav__label {
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.nav__link[aria-current] .nav__num {
+  color: var(--accent-signal);
+}
+.nav__link[aria-current] .nav__label,
+.nav__link:focus-visible .nav__label {
+  color: var(--text);
+}
+@media (hover: hover) {
+  .nav__link:hover .nav__label {
+    color: var(--text);
+  }
+}
+
+/* Outline and radius are set inline in Navbar.tsx. */
+.nav__pill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: var(--r-pill);
+  background: var(--nav-pill-fill);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Actions */
+.nav__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--s-3);
+}
+/* Flex so the button does not pick up a line box. */
+.nav__cta-slot,
+.nav__cta-wrap {
+  display: inline-flex;
+}
+/* 44px touch target. */
+.nav__cta::before {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+}
+.nav__menu {
+  display: none;
+}
+
+.nav__menu-icon {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+.nav__menu-glyph {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+.nav__menu-glyph--close {
+  opacity: 0;
+  transform: rotate(-45deg);
+}
+.nav__menu[aria-expanded='true'] .nav__menu-glyph--menu {
+  opacity: 0;
+  transform: rotate(45deg);
+}
+.nav__menu[aria-expanded='true'] .nav__menu-glyph--close {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+@media (max-width: 899px) {
+  .nav__links {
+    display: none;
+  }
+  .nav__menu {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 479px) {
+  .nav__wordmark-tail,
+  .nav__cta-slot {
+    display: none;
+  }
+}

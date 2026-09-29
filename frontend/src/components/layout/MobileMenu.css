@@ -1,0 +1,236 @@
+.sheet-host {
+  display: contents;
+}
+
+.sheet {
+  --sheet-sb: 0px;
+  --sheet-bar-h: var(--nav-h);
+  /* Keeps the nameplate above the horizon rim. */
+  --sheet-rim: 78px;
+
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-sheet);
+}
+.sheet[data-compact] {
+  --sheet-bar-h: var(--nav-h-compact);
+}
+
+/* Sits exactly over the navbar trigger. */
+.btn.sheet__close {
+  position: absolute;
+  z-index: 2;
+  top: calc((var(--sheet-bar-h) - 44px) / 2);
+  right: calc(var(--gutter) + var(--sheet-sb));
+}
+.sheet__close-glyph {
+  display: block;
+  width: 20px;
+  height: 20px;
+  line-height: 0;
+}
+
+.sheet__guard {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 0;
+  height: var(--sheet-bar-h);
+  background: var(--sheet-bg);
+}
+
+.sheet__panel {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--sheet-bg) var(--brand-gradient);
+  box-shadow: var(--shadow-sheet);
+  overflow: clip;
+}
+
+.sheet__ground {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  pointer-events: none;
+}
+.sheet__dots {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 14%, transparent 38%);
+  mask-image: linear-gradient(to bottom, black 0%, black 14%, transparent 38%);
+}
+
+.sheet__scroll {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--nav-h) + 20px) var(--gutter) calc(var(--sheet-rim) + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sheet__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  min-height: 100%;
+}
+
+/* Section rows */
+.sheet__list {
+  border-top: 1px solid var(--rule-soft);
+}
+.sheet__item {
+  border-bottom: 1px solid var(--rule-soft);
+}
+.sheet__link {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-4);
+  min-height: 64px;
+  padding: 15px var(--s-3) 13px;
+  color: var(--text);
+  border-radius: var(--r-sm);
+}
+.sheet__link[aria-current]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 2px;
+  background: var(--accent-signal);
+}
+/* Fixed width: Chakra Petch has no tabular figures. */
+.sheet__num {
+  flex-shrink: 0;
+  width: 1.75rem;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.sheet__link[aria-current] .sheet__num {
+  color: var(--accent-signal);
+}
+/* Clips the line while it rises; the padding keeps descenders visible. */
+.sheet__label {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.1em;
+  margin-block: -0.1em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: var(--wd-h1);
+  font-size: clamp(2rem, 9vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.sheet__label-line {
+  display: block;
+  will-change: transform;
+}
+.sheet__link:active .sheet__label {
+  opacity: 0.85;
+}
+
+.sheet__row--join {
+  margin-top: var(--s-8);
+}
+.btn.sheet__join {
+  --btn-h: 48px;
+}
+
+.sheet__social {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--s-6);
+  margin-top: var(--s-3);
+}
+.btn.sheet__social-link {
+  height: 44px;
+}
+
+/* Next up */
+.sheet__next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--s-4);
+  margin-top: var(--s-6);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--rule-soft);
+}
+.sheet__next-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  color: var(--text-2);
+  border-radius: var(--r-sm);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.sheet__next-link:active {
+  opacity: 0.8;
+}
+.sheet__next-prefix {
+  text-transform: uppercase;
+  color: var(--text);
+}
+.sheet__next-when {
+  text-transform: uppercase;
+}
+@media (hover: hover) {
+  .sheet__next-link:hover {
+    color: var(--text);
+  }
+}
+.btn.sheet__next-register {
+  height: 44px;
+  font-family: var(--font-label);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.06em;
+}
+
+/* Nameplate */
+.sheet__plate {
+  display: grid;
+  justify-items: start;
+  margin-top: auto;
+  padding-top: var(--s-10);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: var(--wd-display);
+  font-size: var(--fs-h2);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  user-select: none;
+}
+.sheet__plate-slot {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.06em;
+  margin-block: -0.06em;
+}
+.sheet__plate-line {
+  display: block;
+  will-change: transform;
+}
+.sheet__plate-line--bottom {
+  color: var(--primary-soft);
+}
+
+@media (min-width: 900px) {
+  .sheet {
+    display: none;
+  }
+}
