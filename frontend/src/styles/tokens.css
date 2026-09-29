@@ -1,0 +1,173 @@
+/* Design tokens. Components read these instead of hard-coding values. */
+:root {
+  color-scheme: dark;
+
+  /* ---------- Colour ---------- */
+  --bg: #06040b;              /* page ground: near-black with a violet undertone */
+  --bg-2: #000000;            /* floor: footer, sheet, preloader top, html background */
+  --surface: #120c20;         /* cards, ticket main */
+  --surface-2: #1b1330;       /* elevated: ticket stub, chips, hover fills */
+
+  --primary: #6f3eb7;         /* brand violet: buttons, marquee band, clay mid-tone */
+  --primary-hover: #5f33a1;
+  --primary-active: #451d8d;
+  --primary-deep: #451d8d;    /* brand deep violet: gradient floor, horizon body */
+  --primary-display: #9d5cff; /* display-only bright violet (>= 24px text), quatrefoil, nav pill outline */
+  --primary-soft: #cda8ff;    /* lavender: hairline highlights, horizon line */
+
+  --accent-live: #b64ffb;     /* hyper magenta ink: live / now / active. Marks only. */
+  --accent-live-text: #d29bff;
+  --accent-signal: #e4ed73;   /* lime cream ink: numbering, links, technical, focus */
+  --accent-signal-ink: #14120a; /* text on a lime fill */
+  --secondary: var(--accent-live);
+  --accent: var(--accent-signal);
+
+  --text: #ffffff;            /* display, h3, button labels, figures */
+  --text-2: #bdb6d0;          /* body copy, nav labels */
+  --text-muted: #9189aa;      /* captions, metadata (>= 12px only) */
+
+  --border: rgba(205, 168, 255, 0.12);
+  --border-strong: rgba(205, 168, 255, 0.28);
+  --rule: rgba(205, 168, 255, 0.22);
+  --rule-soft: rgba(205, 168, 255, 0.12);
+  --tear: rgba(205, 168, 255, 0.38);
+  --dot: rgba(205, 168, 255, 0.14);
+  --dot-coarse: rgba(205, 168, 255, 0.2);
+
+  --focus: #e4ed73;
+  --focus-ring: var(--focus);
+  --selection-bg: rgba(111, 62, 183, 0.6);
+  --selection-text: #ffffff;
+
+  --ghost-hover-bg: rgba(255, 255, 255, 0.06);
+  --ghost-hover-border: rgba(255, 255, 255, 0.4);
+  --ghost-active-bg: rgba(255, 255, 255, 0.09);
+  --chip-live-bg: rgba(182, 79, 251, 0.12);
+  --chip-live-border: rgba(182, 79, 251, 0.45);
+  --chip-signal-bg: rgba(228, 237, 115, 0.08);
+  --chip-signal-border: rgba(228, 237, 115, 0.4);
+
+  --nav-bg: rgba(6, 4, 11, 0.92);
+  --sheet-bg: #000000;
+
+  /* ---------- Gradients ---------- */
+  --haze: radial-gradient(
+    60% 50% at 50% 100%,
+    rgba(111, 62, 183, 0.42) 0%,
+    rgba(182, 79, 251, 0.1) 40%,
+    transparent 70%
+  );
+  /* The poster gradient from the chapter's own artwork: black sky falling into violet. */
+  --brand-gradient: linear-gradient(180deg, #000000 0%, #0d0619 30%, #24104f 68%, #451d8d 100%);
+  --brand-gradient-soft: linear-gradient(180deg, transparent 0%, rgba(36, 16, 79, 0.55) 60%, rgba(69, 29, 141, 0.75) 100%);
+  --horizon-line: rgba(205, 168, 255, 0.8);
+  --horizon-glow: rgba(111, 62, 183, 0.65);
+  --horizon-glow-2: rgba(157, 92, 255, 0.45);
+  --spot: rgba(157, 92, 255, 0.16);   /* pointer spotlight on tilt cards */
+  --foil: linear-gradient(115deg, transparent 20%, rgba(228, 237, 115, 0.14) 38%, rgba(182, 79, 251, 0.18) 50%, rgba(205, 168, 255, 0.14) 62%, transparent 80%);
+  --dot-cell: 12px;
+  --dots-fine: radial-gradient(var(--dot) 1px, transparent 1.3px);
+  --dots-coarse: radial-gradient(var(--dot-coarse) 1.6px, transparent 1.9px);
+  --clay: linear-gradient(145deg, #cda8ff 0%, #9d5cff 32%, #6f3eb7 68%, #451d8d 100%);
+  --clay-specular: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0));
+
+  /* ---------- Typography ---------- */
+  --font-display: 'Bricolage Grotesque', 'Bricolage Fallback', system-ui, sans-serif;
+  --font-body: 'Bricolage Grotesque', 'Bricolage Fallback', system-ui, sans-serif;
+  --font-label: 'Chakra Petch', 'Chakra Fallback', ui-monospace, 'Segoe UI Mono', monospace;
+
+  --fs-display: clamp(4rem, min(15vw, 22svh), 11rem);      /* GWALIOR */
+  --fs-display-sm: clamp(2.2rem, min(8.25vw, 12svh), 6rem); /* GSX */
+  --fs-giant: clamp(6rem, 24vw, 22rem);                     /* footer outlined GSX */
+  --fs-verb: clamp(2.75rem, 6vw, 5.5rem);                   /* story verb */
+  --fs-h1: clamp(2.4rem, 5.2vw, 4.25rem);                   /* section headings (h2 elements) */
+  --fs-h2: clamp(1.9rem, 3.6vw, 2.9rem);                    /* sub-headings, event title */
+  --fs-h3: clamp(1.2rem, 1rem + 0.6vw, 1.45rem);            /* card / step titles */
+  --fs-lead: clamp(1.05rem, 0.8rem + 1.1vw, 1.3rem);
+  --fs-body: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  --fs-small: 0.9375rem;
+  --fs-ui: 0.9375rem;
+  --fs-label: clamp(0.75rem, 0.7rem + 0.15vw, 0.8125rem);
+  --fs-meta: 0.8125rem;
+  --fs-stat: clamp(2rem, 1.4rem + 2vw, 3rem);
+
+  --lh-body: 1.65;
+  --lh-lead: 1.5;
+
+  /* width axis presets (Bricolage wdth) */
+  --wd-display: 75%;
+  --wd-verb: 80%;
+  --wd-stat: 85%;
+  --wd-h1: 88%;
+  --wd-h2: 92%;
+  --wd-h3: 96%;
+
+  /* ---------- Spacing & layout ---------- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-16: 64px;
+  --s-24: 96px;
+  --space-section: clamp(5rem, 10vw, 8.5rem);
+  --container: 1200px;
+  --bleed: 1360px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --col-gap: 24px;
+  --nav-h: 64px;
+  --nav-h-compact: 56px;
+
+  /* ---------- Radii ---------- */
+  --r-sm: 4px;
+  --r-md: 12px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+  --radius-xs: 4px;
+  --radius-sm: var(--r-sm);
+
+  /* ---------- Shadows (achromatic) ---------- */
+  --shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 12px 32px -16px rgba(0, 0, 0, 0.6);
+  --shadow-sheet: 0 24px 48px -12px rgba(0, 0, 0, 0.7);
+  --shadow-tile: inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 -2px 3px rgba(0, 0, 0, 0.3),
+    0 6px 12px -8px rgba(0, 0, 0, 0.6);
+  --btn-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+
+  /* ---------- Motion ---------- */
+  --dur-fast: 140ms;
+  --dur-med: 240ms;
+  --dur-slow: 450ms;
+  --dur-hero: 800ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---------- Z-index ---------- */
+  --z-footer: 0;
+  --z-page: 1;
+  --z-nav: 50;
+  --z-sheet: 60;
+  --z-skip: 70;
+  --z-preloader: 100;
+}
+
+@supports (background: color-mix(in oklab, red 50%, transparent)) {
+  :root {
+    --nav-bg: color-mix(in oklab, var(--bg) 88%, transparent);
+  }
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --col-gap: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --dot-cell: 16px;
+  }
+}
