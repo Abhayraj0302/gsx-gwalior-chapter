@@ -1,0 +1,95 @@
+/* A small moulded block. Three parts, back to front:
+   1. the root: side wall (deep violet) + the contact shadow it throws,
+   2. __face: the lit top face, raised by --clay-depth,
+   3. the icon, pressed into the face. */
+.clay-tile {
+  --clay-size: 44px;
+  --clay-icon: 20px;
+  --clay-r: var(--r-md);
+  --clay-depth: 3px;
+  position: relative;
+  display: inline-block;
+  width: var(--clay-size);
+  height: var(--clay-size);
+  flex-shrink: 0;
+  border-radius: var(--clay-r);
+  /* Side wall: what you see of the block below its top face. */
+  background: linear-gradient(
+    180deg,
+    var(--primary-deep) 0%,
+    color-mix(in oklab, var(--primary-deep) 62%, var(--bg-2)) 100%
+  );
+  /* Contact shadow: tight and dark where the block meets the surface, then soft. Achromatic. */
+  box-shadow:
+    0 1px 0 0 color-mix(in oklab, var(--bg-2) 70%, transparent),
+    0 5px 6px -3px color-mix(in oklab, var(--bg-2) 85%, transparent),
+    0 14px 18px -10px color-mix(in oklab, var(--bg-2) 80%, transparent);
+  color: var(--text);
+  isolation: isolate;
+}
+
+.clay-tile--lg {
+  --clay-size: 56px;
+  --clay-icon: 24px;
+  --clay-r: 15px;
+  --clay-depth: 4px;
+}
+
+.clay-tile__face {
+  position: absolute;
+  inset: 0 0 var(--clay-depth) 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--clay-r);
+  overflow: hidden;
+  background:
+    /* key light from the upper left */
+    radial-gradient(
+      95% 80% at 24% 8%,
+      color-mix(in oklab, var(--text) 38%, transparent) 0%,
+      transparent 58%
+    ),
+    /* the form turning away from the light at the bottom right */
+    radial-gradient(
+      90% 85% at 88% 105%,
+      color-mix(in oklab, var(--bg-2) 46%, transparent) 0%,
+      transparent 62%
+    ),
+    var(--clay);
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in oklab, var(--text) 55%, transparent),
+    inset 0 0 0 1px color-mix(in oklab, var(--primary-soft) 26%, transparent),
+    inset 0 -5px 7px -3px color-mix(in oklab, var(--bg-2) 50%, transparent);
+}
+
+/* Specular cap: the glossy band across the top third. */
+.clay-tile__face::before {
+  content: '';
+  position: absolute;
+  inset: 2px 3px auto 3px;
+  height: 46%;
+  border-radius: calc(var(--clay-r) - 2px) calc(var(--clay-r) - 2px) 60% 60% / calc(var(--clay-r) - 2px)
+    calc(var(--clay-r) - 2px) 100% 100%;
+  background: var(--clay-specular);
+  pointer-events: none;
+}
+
+.clay-tile svg {
+  position: relative;
+  width: var(--clay-icon);
+  height: var(--clay-icon);
+  stroke-width: 1.75;
+  /* Pressed into the clay: a dark lip on the lower edge of each stroke. */
+  filter: drop-shadow(0 1px 0 color-mix(in oklab, var(--primary-deep) 85%, transparent));
+}
+
+@media (max-width: 767px) {
+  .clay-tile {
+    --clay-size: 40px;
+  }
+  .clay-tile--lg {
+    --clay-size: 48px;
+    --clay-icon: 22px;
+  }
+}

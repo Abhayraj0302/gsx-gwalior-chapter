@@ -1,0 +1,74 @@
+.index-rule {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  margin-bottom: var(--s-12);
+  color: var(--text-muted);
+}
+
+.index-rule__label {
+  white-space: nowrap;
+  color: var(--text-2);
+}
+
+/* Brackets and the dash are furniture: quieter than the words they frame. */
+.index-rule__bracket,
+.index-rule__dash {
+  color: var(--text-muted);
+  white-space: pre;
+}
+
+.index-rule__num {
+  color: var(--accent-signal);
+  font-variant-numeric: tabular-nums;
+}
+
+.index-rule__text {
+  text-transform: uppercase;
+}
+
+/* Unscaled wrapper: the in-view target and the runway of the tick. */
+.index-rule__line {
+  position: relative;
+  display: block;
+  flex: 1 1 auto;
+  min-width: 24px;
+  height: 1px;
+}
+
+.index-rule__stroke {
+  display: block;
+  width: 100%;
+  transform-origin: left center;
+}
+
+/* As wide as the rule, shifted left by what is still undrawn: its right edge
+   is always the head of the stroke. */
+.index-rule__runner {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.index-rule__tick {
+  position: absolute;
+  right: -1px;
+  top: -3px;
+  width: 2px;
+  height: 7px;
+  background: var(--accent-signal);
+}
+
+.index-rule__counter {
+  white-space: nowrap;
+}
+
+.index-rule__now {
+  color: var(--text-2);
+}
+
+@media (max-width: 479px) {
+  .index-rule__counter {
+    display: none;
+  }
+}

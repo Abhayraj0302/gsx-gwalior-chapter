@@ -1,0 +1,225 @@
+.btn {
+  --btn-h: 44px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  height: var(--btn-h);
+  min-width: 44px;
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  font-family: var(--font-body);
+  font-size: var(--fs-ui);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+/* One ring for every variant: the lime token, clear of the edge. */
+.btn:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* size="sm" only changes the height; the font size stays the same. */
+.btn--sm {
+  --btn-h: 36px;
+  padding: 0 14px;
+}
+
+.btn--full {
+  width: 100%;
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.btn__label {
+  position: relative;
+}
+
+.btn__icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.btn__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Filled variants (primary, lime) share the sheen */
+.btn--primary,
+.btn--lime {
+  overflow: hidden; /* clips the sheen band; the focus outline is unaffected */
+  isolation: isolate;
+}
+
+/* The band waits off the left edge. Leaving the button snaps it back unseen
+   (no transition in the rest state), so every hover sweeps exactly once. */
+.btn--primary::after,
+.btn--lime::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  background: linear-gradient(
+    104deg,
+    transparent 34%,
+    color-mix(in oklab, var(--text) 26%, transparent) 50%,
+    transparent 66%
+  );
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+/* Primary */
+.btn--primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: var(--btn-highlight);
+}
+.btn--primary:active {
+  background: var(--primary-active);
+  border-color: var(--primary-active);
+  transform: translateY(1px);
+}
+
+/* Lime: rare, high emphasis. Dark ink on the signal fill. */
+.btn--lime {
+  background: var(--accent-signal);
+  border-color: var(--accent-signal);
+  color: var(--accent-signal-ink);
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--text) 45%, transparent);
+}
+.btn--lime::after {
+  background: linear-gradient(
+    104deg,
+    transparent 34%,
+    color-mix(in oklab, var(--text) 55%, transparent) 50%,
+    transparent 66%
+  );
+}
+.btn--lime:active {
+  background: color-mix(in oklab, var(--accent-signal) 78%, var(--bg-2));
+  border-color: color-mix(in oklab, var(--accent-signal) 78%, var(--bg-2));
+  transform: translateY(1px);
+}
+
+/* Secondary (ghost box) */
+.btn--secondary {
+  background: transparent;
+  border-color: var(--border-strong);
+}
+.btn--secondary:active {
+  background: var(--ghost-active-bg);
+  transform: translateY(1px);
+}
+
+/* Ghost / tertiary text link */
+.btn--ghost {
+  height: auto;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-sm);
+  color: var(--accent-signal);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--accent-signal) 55%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition:
+    text-decoration-thickness var(--dur-fast) var(--ease-out),
+    text-decoration-color var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+.btn--ghost:active {
+  opacity: 0.8;
+}
+
+/* Icon-only */
+.btn--icon {
+  width: 44px;
+  padding: 0;
+  border-color: var(--border-strong);
+  background: transparent;
+}
+.btn--icon .btn__icon svg {
+  width: 20px;
+  height: 20px;
+}
+.btn--icon:active {
+  transform: translateY(1px);
+}
+
+@media (hover: hover) {
+  .btn--primary:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+  }
+  .btn--lime:hover {
+    background: color-mix(in oklab, var(--accent-signal) 88%, var(--bg-2));
+    border-color: color-mix(in oklab, var(--accent-signal) 88%, var(--bg-2));
+  }
+  .btn--primary:hover::after,
+  .btn--lime:hover::after {
+    transform: translateX(120%);
+    transition: transform 600ms var(--ease-out);
+  }
+  .btn--primary:hover .btn__icon--end,
+  .btn--lime:hover .btn__icon--end {
+    transform: translateX(2px);
+  }
+  .btn--secondary:hover {
+    background: var(--ghost-hover-bg);
+    border-color: color-mix(in oklab, var(--primary-soft) 78%, transparent);
+  }
+  .btn--secondary:hover .btn__icon--end {
+    transform: translateX(2px);
+  }
+  .btn--ghost:hover {
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--accent-signal);
+  }
+  .btn--ghost:hover .btn__icon--end {
+    transform: translate(1px, -1px);
+  }
+  .btn--icon:hover {
+    background: var(--ghost-hover-bg);
+    border-color: color-mix(in oklab, var(--primary-soft) 78%, transparent);
+  }
+}
+
+@media (max-width: 479px) {
+  .btn--full,
+  .btn--full.btn--sm {
+    --btn-h: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn--primary::after,
+  .btn--lime::after {
+    display: none;
+  }
+}

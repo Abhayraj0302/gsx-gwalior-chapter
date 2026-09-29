@@ -1,0 +1,36 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: color-mix(in oklab, var(--primary-soft) 5%, transparent);
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+  white-space: nowrap;
+  transition: border-color var(--dur-med) var(--ease-out), color var(--dur-med) var(--ease-out);
+}
+
+.chip--live {
+  background: var(--chip-live-bg);
+  border-color: var(--chip-live-border);
+  color: var(--accent-live-text);
+}
+
+.chip--signal {
+  background: var(--chip-signal-bg);
+  border-color: var(--chip-signal-border);
+  color: var(--accent-signal);
+}
+
+.chip--signal .live-dot {
+  background: var(--accent-signal);
+}

@@ -1,0 +1,9 @@
+/* No scroll-margin here: it would stack on top of scroll-padding-top in base.css. */
+.section {
+  position: relative;
+  padding-block: var(--space-section);
+}
+
+.section--flush {
+  padding-block: 0;
+}

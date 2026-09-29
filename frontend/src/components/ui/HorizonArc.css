@@ -1,0 +1,55 @@
+.horizon {
+  --horizon-rise: 110px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--horizon-rise) + 220px);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Violet light spilling up from behind the rim. */
+.horizon__glow {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--horizon-rise) - 40px);
+  width: min(1600px, 130%);
+  height: 260px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    50% 100% at 50% 100%,
+    var(--horizon-glow-2) 0%,
+    var(--horizon-glow) 28%,
+    transparent 72%
+  );
+  opacity: 0.85;
+}
+
+/* The planet: a huge circle; only its top edge is inside the frame. */
+.horizon__planet {
+  position: absolute;
+  left: 50%;
+  top: calc(100% - var(--horizon-rise));
+  width: max(2600px, 240vw);
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--bg-2) 96%, var(--primary-deep) 100%);
+  border-top: 1px solid var(--horizon-line);
+  box-shadow:
+    0 -2px 18px 0 var(--horizon-glow-2),
+    0 -18px 80px 0 var(--horizon-glow);
+}
+
+@media (max-width: 767px) {
+  .horizon {
+    --horizon-rise: 64px !important;
+  }
+  .horizon__planet {
+    width: max(1400px, 300vw);
+  }
+  .horizon__glow {
+    height: 180px;
+  }
+}
