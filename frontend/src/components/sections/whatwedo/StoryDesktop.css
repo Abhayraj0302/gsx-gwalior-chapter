@@ -1,0 +1,269 @@
+/* The stage is fixed-height and sticks in the middle of the space under the
+   compact nav. .story__track covers exactly the pinned stretch, so it can drive
+   scroll progress from 0 to 1. */
+
+.story {
+  --story-stage-h: 392px;
+  --story-gap: var(--s-16);
+  --story-cards: 4;
+  /* Centre of the 56px clay tile: card padding + half the tile. */
+  --story-mark-y: calc(var(--s-8) + 28px);
+  /* Mixed with the background rather than transparent so it fully covers the glyph underneath. */
+  --story-passed: color-mix(in oklab, var(--text) 60%, var(--bg));
+
+  position: relative;
+  align-items: start;
+}
+
+.story__track {
+  position: absolute;
+  left: 0;
+  top: calc((var(--story-stage-h) - var(--nav-h-compact)) / 2);
+  bottom: calc((var(--story-stage-h) + var(--nav-h-compact)) / 2);
+  width: 1px;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Stage */
+
+.story__stage {
+  grid-column: 1 / 7;
+  position: sticky;
+  top: calc((100svh + var(--nav-h-compact) - var(--story-stage-h)) / 2);
+  height: var(--story-stage-h);
+  align-self: start;
+  display: grid;
+  align-content: center;
+  min-width: 0;
+  /* The verb font size uses cqi units against this column. */
+  container-type: inline-size;
+  isolation: isolate;
+}
+
+/* Reduced motion: the full verb list does not fit the fixed height, so stick it under the nav. */
+.story__stage--static {
+  top: calc(var(--nav-h) + var(--s-8));
+  height: auto;
+  min-height: var(--story-stage-h);
+}
+
+.story__lit {
+  position: relative;
+  padding-bottom: var(--s-6);
+}
+
+.story__copy {
+  /* As large as the longest verb allows in this column. */
+  --fs-verb: clamp(4.25rem, 21cqi, 7.75rem);
+  display: grid;
+  row-gap: var(--s-1);
+}
+
+.story__stage .story__you {
+  display: block;
+  color: var(--text-2);
+}
+
+/* One-line mask the verbs slide through. The negative margin lines the heavy
+   stems up optically with "you can" and the rail. */
+.story__slot {
+  position: relative;
+  display: block;
+  height: 1.2em;
+  margin-left: -0.06em;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.story__verb {
+  position: absolute;
+  top: 0;
+  left: 0.025em;
+  display: block;
+  line-height: inherit;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.story__stop {
+  color: var(--accent-live);
+}
+
+.story__rail {
+  position: relative;
+}
+
+.story__into {
+  color: var(--text-2);
+}
+.story__into-num {
+  margin-right: 0.75em;
+  color: var(--accent-signal);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Opacity is driven by scroll progress from StoryDesktop.tsx. */
+.story__haze {
+  position: absolute;
+  left: -14%;
+  right: -6%;
+  /* Lines the glow up with the rule, which sits half a tick below the top of the rail. */
+  bottom: -5px;
+  height: 330px;
+  z-index: -1;
+  background: var(--haze);
+  pointer-events: none;
+}
+.story__haze::after {
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 0;
+  height: 34%;
+  background: var(--brand-gradient-soft);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 52%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 52%, transparent 100%);
+  opacity: 0.7;
+}
+
+.story__static {
+  display: grid;
+  row-gap: var(--s-3);
+}
+.story__list {
+  display: block;
+  text-wrap: balance;
+}
+
+/* Cards */
+
+.story__cards {
+  grid-column: 7 / 13;
+  position: relative;
+  display: grid;
+  /* Equal rows keep the marks evenly spaced; the thread's length calc depends on it. */
+  grid-auto-rows: 1fr;
+  row-gap: var(--story-gap);
+  min-width: 0;
+}
+
+/* Dotted line in the gutter from the first mark to the last; the fill is scaled by scroll. */
+.story__thread {
+  position: absolute;
+  top: var(--story-mark-y);
+  bottom: calc(
+    (100% - (var(--story-cards) - 1) * var(--story-gap)) / var(--story-cards) - var(--story-mark-y)
+  );
+  left: calc(-1 * var(--col-gap) / 2);
+  width: 0;
+  border-left: 1px dotted var(--tear);
+  pointer-events: none;
+}
+.story__thread-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 1px;
+  background: var(--primary-soft);
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+.story__item {
+  position: relative;
+  display: grid;
+  min-width: 0;
+}
+
+/* The lift lives on this wrapper, not the card, so the tilt and its spotlight move with it. */
+.story__lift {
+  display: grid;
+  min-width: 0;
+  opacity: 0.74;
+  transition:
+    transform var(--dur-med) var(--ease-out),
+    opacity var(--dur-med) var(--ease-out);
+}
+.story__lift--active {
+  opacity: 1;
+  transform: translateY(-4px);
+}
+.story--static .story__lift {
+  opacity: 1;
+}
+@media (hover: hover) {
+  .story__lift:hover {
+    opacity: 1;
+  }
+}
+.story__lift .card--active {
+  transform: none;
+}
+
+.story__tilt {
+  display: grid;
+  min-width: 0;
+  border-radius: var(--r-md);
+}
+
+.story__cards .pillar {
+  min-height: 312px;
+}
+
+/* The passed and active colours are stacked pseudo-element glyphs, faded with
+   opacity so the change stays on the compositor. */
+.story__mark {
+  position: absolute;
+  top: var(--story-mark-y);
+  left: calc(-1 * var(--col-gap) / 2);
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  padding: 4px 0;
+  background: var(--bg);
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--text-muted);
+  pointer-events: none;
+  user-select: none;
+}
+.story__mark::before,
+.story__mark::after {
+  content: '×';
+  position: absolute;
+  inset: 4px 0;
+  opacity: 0;
+  transition: opacity var(--dur-med) var(--ease-out);
+}
+.story__mark::before {
+  color: var(--story-passed);
+}
+.story__mark::after {
+  color: var(--accent-live);
+}
+.story__mark[data-state='passed']::before {
+  opacity: 1;
+}
+.story__mark[data-state='active']::after {
+  opacity: 1;
+}
+
+@media (max-width: 1279px) {
+  .story {
+    --story-gap: var(--s-12);
+  }
+  .story__stage {
+    grid-column: 1 / 6;
+  }
+  .story__cards {
+    grid-column: 6 / 13;
+  }
+  /* Too narrow for the pillar name next to the step count. */
+  .story__into {
+    display: none;
+  }
+}

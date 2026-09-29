@@ -1,0 +1,103 @@
+/* Tick states are stacked layers faded with opacity, and the active tick grows
+   with scaleY, so only transform and opacity animate. */
+
+.verb-rail {
+  --verb-rail-tick: 9px;
+  --verb-rail-passed: color-mix(in oklab, var(--text) 60%, transparent);
+
+  display: grid;
+  row-gap: var(--s-4);
+  min-width: 0;
+}
+
+.verb-rail__line {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: var(--verb-rail-tick);
+}
+
+.verb-rail__line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  margin-top: -0.5px;
+  background: var(--rule);
+}
+
+.verb-rail__fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  margin-top: -0.5px;
+  background: var(--accent-signal);
+  transform-origin: 0 50%;
+  will-change: transform;
+}
+
+.verb-rail__tick {
+  position: relative;
+  width: 1px;
+  height: var(--verb-rail-tick);
+  background: var(--rule);
+  transition: transform var(--dur-med) var(--ease-out);
+}
+
+.verb-rail__tick::before,
+.verb-rail__tick::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--dur-med) var(--ease-out);
+}
+.verb-rail__tick::before {
+  background: var(--verb-rail-passed);
+}
+.verb-rail__tick::after {
+  /* 2px wide, centred on the 1px tick. */
+  inset: 0 -0.5px;
+  background: var(--accent-live);
+}
+.verb-rail__tick--passed::before {
+  opacity: 1;
+}
+.verb-rail__tick--active {
+  transform: scaleY(1.9);
+}
+.verb-rail__tick--active::after {
+  opacity: 1;
+}
+
+.verb-rail__readout {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  min-width: 0;
+}
+
+.verb-rail__aside {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.verb-rail__step {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.verb-rail__now {
+  color: var(--accent-signal);
+}

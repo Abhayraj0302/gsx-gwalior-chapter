@@ -1,0 +1,96 @@
+.story-m {
+  display: flex;
+  flex-direction: column;
+}
+
+.story-m__block {
+  position: relative;
+  padding-bottom: var(--s-12);
+}
+.story-m__block:last-child {
+  padding-bottom: 0;
+}
+
+.story-m__head {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  column-gap: var(--s-4);
+  row-gap: var(--s-2);
+  align-items: end;
+  padding: var(--s-3) 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* The nav shrinks once scrolled; this strip fills the space above the heading so content does not show through. */
+.story-m__head::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: calc(var(--nav-h) - var(--nav-h-compact));
+  background: var(--bg);
+  pointer-events: none;
+}
+
+/* Progress line; --story-m-progress is set per block from StoryMobile.tsx. */
+.story-m__head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background: var(--accent-signal);
+  transform: scaleX(var(--story-m-progress, 1));
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+.story-m__you {
+  grid-column: 1;
+  grid-row: 1;
+  color: var(--text-muted);
+}
+
+.story-m__verbs {
+  grid-column: 1;
+  grid-row: 2;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.story-m__verb {
+  white-space: nowrap;
+}
+
+.story-m__stop {
+  color: var(--accent-live);
+}
+
+.story-m__count {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: end;
+  white-space: nowrap;
+}
+
+.story-m__now {
+  color: var(--accent-signal);
+}
+
+.story-m__card {
+  margin-top: var(--s-6);
+}
+
+@media (min-width: 768px) {
+  .story-m__card {
+    max-width: 640px;
+    margin-inline: auto;
+  }
+}

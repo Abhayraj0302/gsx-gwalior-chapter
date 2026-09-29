@@ -1,0 +1,68 @@
+/* Layout only; the card surface comes from ui/Card.css. */
+
+.pillar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.pillar__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-bottom: var(--s-3);
+}
+
+.pillar__tile {
+  display: inline-flex;
+  flex-shrink: 0;
+  transform-origin: 50% 60%;
+}
+
+.pillar__num {
+  position: relative;
+  color: var(--accent-signal);
+  padding-top: var(--s-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.pillar__title {
+  text-wrap: balance;
+}
+
+.pillar__desc {
+  max-width: 52ch;
+  text-wrap: pretty;
+}
+
+.pillar__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  /* Keeps the chips at the bottom when the desktop grid stretches the card. */
+  margin-top: auto;
+  padding-top: var(--s-3);
+}
+
+.pillar__tag {
+  display: inline-flex;
+}
+
+@media (min-width: 1024px) {
+  .pillar {
+    padding: var(--s-8);
+  }
+  .pillar__head {
+    margin-bottom: var(--s-4);
+  }
+  .pillar .clay-tile {
+    width: 56px;
+    height: 56px;
+    border-radius: calc(var(--r-md) + 3px);
+  }
+  .pillar .clay-tile svg {
+    width: 24px;
+    height: 24px;
+  }
+}

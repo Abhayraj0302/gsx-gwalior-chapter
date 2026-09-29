@@ -1,0 +1,35 @@
+.wwd__header {
+  row-gap: var(--s-6);
+  align-items: end;
+  margin-bottom: var(--s-16);
+}
+
+.wwd__title {
+  grid-column: 1 / 8;
+  min-width: 0;
+}
+
+.wwd__accent {
+  color: var(--primary-display);
+}
+
+.wwd__subtitle {
+  grid-column: 8 / 13;
+  max-width: 46ch;
+  /* Roughly aligns with the heading's last baseline. */
+  padding-bottom: 0.25em;
+}
+
+@media (max-width: 1023px) {
+  .wwd__header {
+    margin-bottom: var(--s-12);
+  }
+  .wwd__title,
+  .wwd__subtitle {
+    grid-column: 1 / -1;
+  }
+  .wwd__subtitle {
+    max-width: 56ch;
+    padding-bottom: 0;
+  }
+}
