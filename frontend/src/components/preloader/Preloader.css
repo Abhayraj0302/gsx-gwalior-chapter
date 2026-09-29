@@ -1,0 +1,255 @@
+/* On exit the outer layer slides up and the panel slides down by the same amount, so the content
+   holds still while the page is uncovered from the bottom. Navbar and Preloader.tsx depend on the
+   exit timings. */
+.preloader {
+  --preloader-exit-delay: 120ms;
+  --preloader-exit-dur: 900ms;
+  --lobe-dur: 750ms;
+  --lobe-step: 80ms;
+  --settle-dur: 1100ms;
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  overflow: clip;
+  transform: translateY(0);
+  will-change: transform;
+  transition: transform var(--preloader-exit-dur) var(--ease-in-out) var(--preloader-exit-delay);
+}
+
+.preloader[data-quick] {
+  --lobe-dur: 520ms;
+  --lobe-step: 55ms;
+  --settle-dur: 760ms;
+}
+
+.preloader[data-phase='leaving'] {
+  transform: translateY(-100%);
+}
+
+.preloader__panel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  background: var(--brand-gradient);
+  color: var(--text);
+  overflow: clip;
+  transform: translateY(0);
+  will-change: transform;
+  transition: transform var(--preloader-exit-dur) var(--ease-in-out) var(--preloader-exit-delay);
+}
+
+.preloader[data-phase='leaving'] .preloader__panel {
+  transform: translateY(100%);
+}
+
+.preloader__edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--horizon-line);
+  box-shadow:
+    0 -2px 16px 0 var(--horizon-glow-2),
+    0 -16px 56px 0 var(--horizon-glow);
+  opacity: 0;
+  transition: opacity var(--dur-med) var(--ease-out) var(--preloader-exit-delay);
+}
+
+.preloader[data-phase='leaving'] .preloader__edge {
+  opacity: 1;
+}
+
+.preloader__dots {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 62%);
+  mask-image: linear-gradient(to top, #000 0%, transparent 62%);
+  opacity: 0.8;
+}
+
+/* Wider (flatter) than the page horizons so the caption fits below the rim. */
+.preloader__horizon {
+  z-index: 0;
+  animation: preloader-sunrise 1300ms var(--ease-out) both;
+  will-change: transform, opacity;
+}
+
+.preloader__horizon .horizon__planet {
+  width: max(5400px, 400vw);
+}
+
+@keyframes preloader-sunrise {
+  from {
+    opacity: 0;
+    transform: translateY(56px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mark */
+.preloader__stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  padding: var(--s-8) var(--gutter) 0;
+  transition:
+    opacity 450ms var(--ease-in-out),
+    transform 450ms var(--ease-in-out);
+}
+
+.preloader[data-phase='leaving'] .preloader__stage {
+  opacity: 0;
+  transform: translateY(-36px);
+}
+
+.preloader__mark {
+  position: relative;
+  width: clamp(88px, 16vmin, 148px);
+  aspect-ratio: 1;
+  animation: preloader-settle var(--settle-dur) var(--ease-in-out) both;
+  will-change: transform;
+}
+
+@keyframes preloader-settle {
+  from {
+    transform: rotate(-90deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+/* Sizes mirror the SVG mark in lobes.ts. */
+.preloader__lobe {
+  position: absolute;
+  width: 46.5%;
+  height: 46.5%;
+  background: var(--text);
+  animation: preloader-lobe var(--lobe-dur) var(--ease-out) both;
+  animation-delay: calc(50ms + var(--lobe-i) * var(--lobe-step));
+  will-change: transform, opacity;
+}
+.preloader__lobe--tl {
+  left: 1.75%;
+  top: 1.75%;
+  border-radius: 50% 50% 0 50%;
+}
+.preloader__lobe--tr {
+  right: 1.75%;
+  top: 1.75%;
+  border-radius: 50% 50% 50% 0;
+}
+.preloader__lobe--br {
+  right: 1.75%;
+  bottom: 1.75%;
+  border-radius: 0 50% 50% 50%;
+}
+.preloader__lobe--bl {
+  left: 1.75%;
+  bottom: 1.75%;
+  border-radius: 50% 0 50% 50%;
+}
+
+@keyframes preloader-lobe {
+  from {
+    opacity: 0;
+    transform: translate(calc(var(--lobe-x) * 36%), calc(var(--lobe-y) * 36%)) scale(0.25);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* Caption */
+.preloader__bar {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  column-gap: var(--s-6);
+  row-gap: 10px;
+  width: min(100% - 2 * var(--gutter), var(--container));
+  margin-inline: auto;
+  padding-bottom: calc(var(--s-10) + env(safe-area-inset-bottom));
+  transition: opacity 250ms var(--ease-out);
+}
+
+.preloader[data-phase='leaving'] .preloader__bar {
+  opacity: 0;
+}
+
+.preloader__label,
+.preloader__count {
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.preloader__label {
+  color: var(--text-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preloader__count {
+  min-width: 3ch;
+  text-align: right;
+  color: var(--accent-signal);
+  font-variant-numeric: tabular-nums;
+}
+
+.preloader__track {
+  grid-column: 1 / -1;
+  position: relative;
+  height: 1px;
+  background: var(--rule);
+}
+
+.preloader__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--text);
+  transform-origin: left center;
+}
+
+/* Shifted left by the unfilled amount so its right edge follows the fill. */
+.preloader__runner {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.preloader__tick {
+  position: absolute;
+  right: -1px;
+  top: -3px;
+  width: 2px;
+  height: 7px;
+  background: var(--accent-signal);
+}
+
+@media (max-width: 767px) {
+  /* Overrides the low mobile horizon from HorizonArc.css to make room for the caption. */
+  .preloader .preloader__horizon {
+    --horizon-rise: 112px !important;
+  }
+  .preloader__horizon .horizon__planet {
+    width: max(2400px, 500vw);
+  }
+  .preloader__bar {
+    padding-bottom: calc(var(--s-8) + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 479px) {
+  .preloader__mark {
+    width: clamp(80px, 24vw, 108px);
+  }
+}
