@@ -1,0 +1,413 @@
+.footer {
+  --footer-rise: 130px; /* must match <HorizonArc rise> / HORIZON_RISE in Footer.tsx */
+  --footer-pad-b: 20px;
+  --footer-giant-fs: clamp(12rem, min(30vw, 44svh), 27rem);
+  --footer-stroke: color-mix(in oklab, var(--text) 35%, transparent);
+  --footer-fs-legal: 0.75rem;
+  /* Read by Footer.tsx: 1 = sticky curtain, 0 = in flow. */
+  --footer-curtain: 1;
+
+  position: sticky;
+  bottom: 0;
+  z-index: var(--z-footer);
+  display: flex;
+  flex-direction: column;
+  min-height: min(100svh, 760px);
+  padding: clamp(3.5rem, 6vw, 6rem) 0 calc(var(--footer-pad-b) + env(safe-area-inset-bottom));
+  background: var(--bg-2) var(--brand-gradient);
+  color: var(--text-2);
+  overflow: clip;
+}
+
+/* A sticky footer taller than the viewport never shows its top, so Footer.tsx drops it into flow. */
+.footer--flow {
+  position: relative;
+}
+
+/* Decorative layers */
+.footer__dots {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 30%, black 100%);
+  mask-image: linear-gradient(to bottom, transparent 30%, black 100%);
+}
+
+.footer .footer__horizon {
+  z-index: 2;
+  /* Overrides the !important phone rise in HorizonArc.css. */
+  --horizon-rise: calc(var(--footer-rise) + env(safe-area-inset-bottom)) !important;
+}
+
+/* Flatter than the hero's planet so the rim stays above the bottom bar at the edges. */
+.footer .footer__horizon .horizon__planet {
+  width: max(5200px, 420vw);
+  background: radial-gradient(closest-side, var(--bg-2) 98.6%, var(--primary-deep) 100%);
+}
+
+.footer__inner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+/* Top row */
+.footer__top {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 3fr) minmax(0, 3fr);
+  column-gap: var(--col-gap);
+}
+
+.footer__col {
+  min-width: 0;
+}
+
+.footer__wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 44px;
+  color: var(--text);
+  border-radius: var(--r-sm);
+}
+
+/* Matches .nav__wordmark. */
+.footer__wordmark-text {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 0.8rem;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.footer__mark {
+  flex-shrink: 0;
+  color: var(--primary-display);
+}
+
+.footer__tagline {
+  margin-top: var(--s-5);
+  margin-left: -0.03em; /* optical: the W's arm meets the wordmark's left edge */
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: var(--wd-h2);
+  font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+
+.footer__tagline-line {
+  display: block;
+}
+
+.footer__tagline-stop {
+  color: var(--accent-signal);
+}
+
+.footer__line {
+  margin-top: var(--s-4);
+  max-width: 36ch;
+  color: var(--text-muted);
+}
+
+.footer__col-title {
+  margin-bottom: var(--s-2);
+}
+
+.footer__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer__link {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 44px;
+  font-size: var(--fs-ui);
+  font-weight: 500;
+  color: var(--text-2);
+  border-radius: var(--r-sm);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.footer__num,
+.footer__link-icon,
+.footer__link-arrow {
+  color: var(--text-muted);
+  transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.footer__num {
+  min-width: 2ch;
+}
+
+.footer__link-icon {
+  display: inline-flex;
+  line-height: 0;
+}
+
+.footer__link-label {
+  position: relative;
+  line-height: 1.3;
+}
+
+.footer__link-label::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-med) var(--ease-out);
+}
+
+.footer__link:active {
+  color: var(--text);
+}
+
+.footer__link:focus-visible {
+  color: var(--text);
+}
+
+.footer__link:focus-visible .footer__link-label::after {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .footer__link:hover {
+    color: var(--text);
+  }
+  .footer__link:hover .footer__link-label::after {
+    transform: scaleX(1);
+  }
+  .footer__link:hover .footer__link-icon {
+    color: var(--text-2);
+  }
+  .footer__link:hover .footer__link-arrow {
+    color: var(--text);
+    transform: translate(1px, -1px);
+  }
+}
+
+/* Giant wordmark. The bottom offset keeps the letters' feet behind the planet; Footer.tsx mirrors it as HIDDEN_PCT. */
+.footer__giant {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--footer-rise) + env(safe-area-inset-bottom) - var(--footer-giant-fs) * 0.17);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  font-size: var(--footer-giant-fs);
+  line-height: 0.8;
+  pointer-events: none;
+  user-select: none;
+}
+
+.footer__giant-rise {
+  position: relative;
+  will-change: transform;
+}
+
+.footer__giant-text {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: var(--wd-display);
+  font-size: inherit;
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.footer__giant-text--outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--footer-stroke);
+}
+
+@supports not (-webkit-text-stroke: 1px currentColor) {
+  .footer__giant-text--outline {
+    color: var(--surface-2);
+  }
+}
+
+.footer__giant-text--solid {
+  position: absolute;
+  inset: 0;
+  color: var(--text);
+}
+
+/* Bottom bar */
+.footer__gap {
+  flex: 1 0 auto;
+  min-height: calc(var(--footer-giant-fs) * 0.63 + var(--s-10));
+}
+
+.footer__ground {
+  display: flex;
+  align-items: flex-end;
+  height: calc(var(--footer-rise) - var(--footer-pad-b));
+}
+
+.footer__bar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--s-6);
+  min-height: 44px;
+}
+
+.footer__legal {
+  justify-self: start;
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: var(--footer-fs-legal);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  text-wrap: balance;
+}
+
+.footer__stamp {
+  justify-self: center;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.footer__top-magnet {
+  justify-self: end;
+  display: inline-flex;
+}
+
+.footer__top-btn.btn--ghost {
+  gap: var(--s-3);
+  min-height: 44px;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.footer__top-btn .btn__label {
+  position: relative;
+}
+
+.footer__top-btn .btn__label::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-med) var(--ease-out);
+}
+
+.footer__top-btn.btn--ghost .btn__icon--end {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  color: var(--text-2);
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.footer__top-btn .btn__icon--end svg {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.footer__top-btn:focus-visible {
+  color: var(--text);
+}
+
+.footer__top-btn:focus-visible .btn__label::after {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .footer__top-btn.btn--ghost:hover {
+    color: var(--text);
+  }
+  .footer__top-btn:hover .btn__label::after {
+    transform: scaleX(1);
+  }
+  .footer__top-btn.btn--ghost:hover .btn__icon--end {
+    border-color: var(--accent-signal);
+    color: var(--accent-signal);
+    transform: none;
+  }
+  .footer__top-btn.btn--ghost:hover .btn__icon--end svg {
+    transform: translateY(-2px);
+  }
+}
+
+/* Responsive */
+@media (max-width: 899px) {
+  /* Stacked rows are taller than most phone viewports, so no curtain. */
+  .footer {
+    --footer-curtain: 0;
+    position: relative;
+    min-height: auto;
+  }
+  .footer__top {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    row-gap: var(--s-10);
+  }
+  .footer__brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer {
+    --footer-rise: 140px;
+    --footer-giant-fs: clamp(9rem, 54vw, 15rem);
+    padding-top: var(--s-16);
+  }
+  .footer .footer__horizon .horizon__planet {
+    width: max(2400px, 600vw);
+  }
+  .footer__gap {
+    min-height: calc(var(--footer-giant-fs) * 0.63 + var(--s-8));
+  }
+  .footer__bar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'stamp top'
+      'legal legal';
+    row-gap: var(--s-2);
+  }
+  .footer__legal {
+    grid-area: legal;
+    text-wrap: pretty;
+  }
+  .footer__stamp {
+    grid-area: stamp;
+    justify-self: start;
+    text-align: left;
+  }
+  .footer__top-magnet {
+    grid-area: top;
+  }
+}
+
+/* Landscape phones: the footer does not fit under 500px of height. */
+@media (max-height: 499px) and (orientation: landscape) {
+  .footer {
+    --footer-curtain: 0;
+    position: relative;
+    min-height: auto;
+  }
+}

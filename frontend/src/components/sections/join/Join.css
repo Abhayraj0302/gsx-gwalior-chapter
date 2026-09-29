@@ -1,0 +1,384 @@
+.join {
+  min-height: 70svh;
+}
+
+.join__grid {
+  align-items: start;
+  row-gap: var(--s-12);
+}
+
+.join__lead {
+  grid-column: 1 / 7;
+  min-width: 0;
+}
+
+.join__stub {
+  grid-column: 8 / 13;
+  min-width: 0;
+}
+
+.join__title {
+  margin-bottom: var(--s-10);
+  margin-left: -0.03em; /* optical: the J's bar sits on the index rule's bracket */
+}
+
+.join__stop {
+  color: var(--accent-signal);
+}
+
+.join__closing {
+  margin-top: var(--s-8);
+}
+
+.join__closing-text {
+  display: inline-block;
+  color: var(--text-2);
+  letter-spacing: 0.14em;
+}
+
+/* Steps */
+.join-steps {
+  --join-num-w: 44px;
+  position: relative; /* connector origin and measurement root */
+}
+
+.join-steps__connector {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.join-steps__dots {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 0 6;
+}
+
+/* Mask stroke; white means fully visible. */
+.join-steps__connector-reveal {
+  fill: none;
+  stroke: white;
+  stroke-width: 6;
+}
+
+.join-steps__head {
+  fill: var(--accent-signal);
+}
+
+.join-steps__row {
+  position: relative;
+  padding-block: var(--s-5);
+}
+
+.join-steps__rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--rule);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.join-steps__rule--end {
+  top: auto;
+  bottom: 0;
+}
+
+.join-steps__rule--tick::before,
+.join-steps__rule--tick::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  width: 1px;
+  height: 7px;
+  background: var(--rule);
+}
+
+.join-steps__rule--tick::before {
+  left: 0;
+}
+
+.join-steps__rule--tick::after {
+  right: 0;
+}
+
+.join-steps__rise {
+  display: grid;
+  grid-template-columns: var(--join-num-w) minmax(0, 1fr);
+  column-gap: var(--s-4);
+  align-items: start;
+  min-height: 32px;
+}
+
+/* As tall as the title's first line so the dot and connector centre on it. */
+.join-steps__num {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  height: calc(var(--fs-h3) * 1.2);
+}
+
+.join-steps__index {
+  position: relative;
+  z-index: 1;
+  padding-inline: 2px;
+  background: var(--bg); /* lifts the numeral off the dotted line running behind it */
+  color: var(--accent-signal);
+}
+
+.join-steps__body {
+  min-width: 0;
+  transition: transform 180ms var(--ease-out);
+}
+
+.join-steps__title {
+  color: var(--text);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.join-steps__desc {
+  margin-top: var(--s-2);
+  max-width: 52ch;
+  text-wrap: pretty;
+}
+
+.join-steps__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--s-6);
+  margin-top: var(--s-1);
+  margin-bottom: calc(-1 * var(--s-3)); /* the 44px hit boxes would otherwise pad the row */
+}
+
+.join-steps__links .btn--ghost {
+  min-height: 44px; /* touch target */
+}
+
+@media (hover: hover) {
+  .join-steps__title {
+    color: color-mix(in oklab, var(--text) 84%, var(--bg));
+  }
+  /* Only the text shifts so the numeral stays on the connector. */
+  .join-steps__row:hover .join-steps__body {
+    transform: translateX(4px);
+  }
+  .join-steps__row:hover .join-steps__title {
+    color: var(--text);
+  }
+}
+
+/* Membership ticket */
+.member-stub__deal {
+  will-change: transform;
+}
+
+.member-stub__rest {
+  transform: rotate(0deg);
+}
+
+/* Gives the tilt overlays the ticket's radius. */
+.member-stub__tilt {
+  --stub-strip-h: 136px;
+  --stub-notch: 10px;
+  border-radius: var(--r-md);
+}
+
+/* Keep the tilt overlays out of the notches at the tear. */
+@supports (mask-composite: intersect) or (-webkit-mask-composite: source-in) {
+  .member-stub__tilt > .tilt__spot,
+  .member-stub__tilt > .tilt__foil {
+    -webkit-mask:
+      radial-gradient(
+        circle at 0 calc(100% - var(--stub-strip-h)),
+        transparent var(--stub-notch),
+        black calc(var(--stub-notch) + 0.5px)
+      ),
+      radial-gradient(
+        circle at 100% calc(100% - var(--stub-strip-h)),
+        transparent var(--stub-notch),
+        black calc(var(--stub-notch) + 0.5px)
+      );
+    -webkit-mask-composite: source-in;
+    mask:
+      radial-gradient(
+        circle at 0 calc(100% - var(--stub-strip-h)),
+        transparent var(--stub-notch),
+        black calc(var(--stub-notch) + 0.5px)
+      ),
+      radial-gradient(
+        circle at 100% calc(100% - var(--stub-strip-h)),
+        transparent var(--stub-notch),
+        black calc(var(--stub-notch) + 0.5px)
+      );
+    mask-composite: intersect;
+  }
+}
+
+.member-stub.ticket {
+  grid-template-columns: 1fr;
+}
+
+.member-stub .ticket__main {
+  border-right: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: var(--ticket-r) var(--ticket-r) 0 0;
+}
+
+.member-stub .ticket__stub {
+  border-left: 1px solid var(--border);
+  border-top: 1px dashed var(--tear);
+  border-radius: 0 0 var(--ticket-r) var(--ticket-r);
+}
+
+/* Notches on the horizontal tear, as in the stacked ticket in Card.css. */
+@supports (mask-composite: intersect) or (-webkit-mask-composite: source-in) {
+  .member-stub .ticket__main {
+    -webkit-mask:
+      radial-gradient(circle at 0 100%, transparent var(--notch), black calc(var(--notch) + 0.5px)),
+      radial-gradient(circle at 100% 100%, transparent var(--notch), black calc(var(--notch) + 0.5px));
+    -webkit-mask-composite: source-in;
+    mask:
+      radial-gradient(circle at 0 100%, transparent var(--notch), black calc(var(--notch) + 0.5px)),
+      radial-gradient(circle at 100% 100%, transparent var(--notch), black calc(var(--notch) + 0.5px));
+    mask-composite: intersect;
+  }
+  .member-stub .ticket__stub {
+    -webkit-mask:
+      radial-gradient(circle at 0 0, transparent var(--notch), black calc(var(--notch) + 0.5px)),
+      radial-gradient(circle at 100% 0, transparent var(--notch), black calc(var(--notch) + 0.5px));
+    -webkit-mask-composite: source-in;
+    mask:
+      radial-gradient(circle at 0 0, transparent var(--notch), black calc(var(--notch) + 0.5px)),
+      radial-gradient(circle at 100% 0, transparent var(--notch), black calc(var(--notch) + 0.5px));
+    mask-composite: intersect;
+  }
+}
+
+.member-stub__main {
+  padding: 26px 28px 28px;
+}
+
+.member-stub__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+
+.member-stub__label {
+  padding-top: 6px; /* optical: the label's cap line meets the mark's top lobe */
+}
+
+.member-stub__mark {
+  flex-shrink: 0;
+  color: var(--primary-display);
+}
+
+.member-stub__title {
+  margin-top: var(--s-8);
+  font-size: clamp(1.75rem, 1.25rem + 1.3vw, 2.25rem);
+  letter-spacing: -0.02em;
+}
+
+.member-stub__line {
+  margin-top: var(--s-2);
+  max-width: 34ch;
+}
+
+.member-stub__magnet {
+  display: inline-flex;
+  width: 100%;
+  margin-top: var(--s-6);
+}
+
+.member-stub__follow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--s-6);
+  margin-top: var(--s-3);
+  margin-bottom: calc(-1 * var(--s-3));
+}
+
+.member-stub__follow .btn--ghost {
+  min-height: 44px;
+}
+
+.member-stub__strip {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  height: var(--stub-strip-h, 136px);
+  padding: 0 28px;
+}
+
+.member-stub__qr {
+  --qr-size: 104px;
+  flex: 0 0 auto;
+}
+
+.member-stub__strip-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  min-width: 0;
+}
+
+.member-stub__scan {
+  color: var(--text);
+  text-transform: uppercase;
+}
+
+.member-stub__serial {
+  white-space: nowrap;
+  color: var(--text-2);
+}
+
+/* Responsive */
+@media (min-width: 900px) {
+  .join__stub {
+    position: sticky;
+    top: calc(var(--nav-h) + var(--s-8));
+  }
+  .member-stub__rest {
+    transform: rotate(-1.25deg);
+  }
+}
+
+@media (max-width: 899px) {
+  .join__lead,
+  .join__stub {
+    grid-column: 1 / -1;
+  }
+  .join__stub {
+    order: -1;
+  }
+  .join-steps {
+    --join-num-w: 36px;
+  }
+  /* Larger touch targets on the stacked layout. */
+  .member-stub__cta.btn {
+    --btn-h: 48px;
+  }
+  .join-steps__links .btn--ghost,
+  .member-stub__follow .btn--ghost {
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 767px) {
+  .join__title {
+    margin-bottom: var(--s-8);
+  }
+  .member-stub__main {
+    padding: 20px 22px 22px;
+  }
+  .member-stub__strip {
+    padding: 0 22px;
+  }
+}
