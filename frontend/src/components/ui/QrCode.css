@@ -1,0 +1,62 @@
+.qr {
+  --qr-size: 128px;
+  --qr-ink: var(--bg-2);
+  --qr-eye: var(--primary-deep);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  margin: 0;
+  width: var(--qr-size);
+}
+
+.qr__tile {
+  position: relative;
+  display: block;
+  width: var(--qr-size);
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background: var(--text);
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--bg-2) 8%, transparent),
+    0 10px 24px -14px color-mix(in oklab, var(--bg-2) 90%, transparent);
+}
+
+.qr__code {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.qr__modules {
+  fill: var(--qr-ink);
+}
+
+.qr__eyes {
+  fill: var(--qr-eye);
+}
+
+/* Travels down with the print edge: its runway is the whole tile. */
+.qr__scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.qr__scan::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 2px;
+  background: var(--accent-signal);
+  box-shadow: 0 0 10px 1px color-mix(in oklab, var(--accent-signal) 55%, transparent);
+}
+
+/* Wraps inside the code's width rather than spilling past a narrow stub. */
+.qr__caption {
+  color: var(--text-2);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
