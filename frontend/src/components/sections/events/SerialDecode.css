@@ -1,0 +1,20 @@
+.serial {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
+.serial__glyphs {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+/* Fixed-width cells so the line does not reflow while scrambling. */
+.serial__ch {
+  display: inline-block;
+  min-width: 1ch;
+  text-align: center;
+}
+
+.serial__ch--cycling {
+  opacity: 0.55;
+}

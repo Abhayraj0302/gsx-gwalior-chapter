@@ -1,0 +1,270 @@
+.events__title {
+  margin: 0;
+}
+
+.events__ticket,
+.events__more {
+  --events-ticket-max: 960px;
+  width: 100%;
+  max-width: var(--events-ticket-max);
+  margin-inline: auto;
+}
+
+/* Ticket: this wrapper is the size container for the ticket's 640px container queries. */
+.events__ticket {
+  --events-crop-len: 14px;
+  --events-crop-gap: 9px;
+  --events-notch: 14px;
+  position: relative;
+  margin-top: var(--s-10);
+  container-type: inline-size;
+}
+
+/* Matches the ticket radius so the foil overlay clips to it. */
+.events__tilt {
+  border-radius: var(--r-lg);
+}
+
+/* Cut the tear notches out of the foil at the same spot Card.css cuts them from the ticket. */
+@supports (mask-composite: intersect) or (-webkit-mask-composite: source-in) {
+  .events__tilt > .tilt__foil {
+    -webkit-mask:
+      radial-gradient(circle at 70% 0, transparent var(--events-notch), #000 calc(var(--events-notch) + 0.5px)),
+      radial-gradient(circle at 70% 100%, transparent var(--events-notch), #000 calc(var(--events-notch) + 0.5px));
+    -webkit-mask-composite: source-in;
+    mask:
+      radial-gradient(circle at 70% 0, transparent var(--events-notch), #000 calc(var(--events-notch) + 0.5px)),
+      radial-gradient(circle at 70% 100%, transparent var(--events-notch), #000 calc(var(--events-notch) + 0.5px));
+    mask-composite: intersect;
+  }
+}
+
+/* Crop marks sit outside the tilt so they stay still while the ticket moves. */
+.events__marks {
+  position: absolute;
+  inset: 0;
+  display: none;
+  pointer-events: none;
+}
+
+.events__crop {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.events__crop--tl {
+  top: 0;
+  left: 0;
+}
+.events__crop--tr {
+  top: 0;
+  right: 0;
+}
+.events__crop--bl {
+  bottom: 0;
+  left: 0;
+}
+.events__crop--br {
+  bottom: 0;
+  right: 0;
+}
+
+.events__crop::before,
+.events__crop::after {
+  content: '';
+  position: absolute;
+  background: var(--rule);
+}
+
+.events__crop::before {
+  top: 0;
+  width: var(--events-crop-len);
+  height: 1px;
+}
+.events__crop--tl::before,
+.events__crop--bl::before {
+  right: var(--events-crop-gap);
+}
+.events__crop--tr::before,
+.events__crop--br::before {
+  left: var(--events-crop-gap);
+}
+
+.events__crop::after {
+  left: 0;
+  width: 1px;
+  height: var(--events-crop-len);
+}
+.events__crop--tl::after,
+.events__crop--tr::after {
+  bottom: var(--events-crop-gap);
+}
+.events__crop--bl::after,
+.events__crop--br::after {
+  top: var(--events-crop-gap);
+}
+
+.events__perf {
+  position: absolute;
+  left: 70%;
+  width: 1px;
+  height: var(--events-crop-gap);
+  background: var(--tear);
+}
+.events__perf--top {
+  bottom: calc(100% + 4px);
+}
+.events__perf--bottom {
+  top: calc(100% + 4px);
+}
+
+.events__swatches {
+  position: absolute;
+  top: calc(100% + var(--s-3));
+  right: var(--r-lg);
+  display: flex;
+  gap: 3px;
+}
+
+.events__swatch {
+  display: block;
+  width: 7px;
+  height: 7px;
+}
+.events__swatch--deep {
+  background: var(--primary-deep);
+}
+.events__swatch--violet {
+  background: var(--primary);
+}
+.events__swatch--lavender {
+  background: var(--primary-soft);
+}
+.events__swatch--live {
+  background: var(--accent-live);
+}
+.events__swatch--signal {
+  background: var(--accent-signal);
+}
+
+/* Phones have no gutter for the marks. */
+@media (min-width: 768px) {
+  .events__marks {
+    display: block;
+  }
+}
+
+/* When stacked, the notch position depends on content, so the foil mask cannot follow it. */
+@container (max-width: 640px) {
+  .events__tilt > .tilt__foil,
+  .events__perf {
+    display: none;
+  }
+}
+
+/* More events link */
+.events__more {
+  margin-top: var(--s-12);
+}
+
+.events__more-link {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas: 'text handle arrow';
+  align-items: center;
+  column-gap: var(--s-6);
+  row-gap: var(--s-1);
+  min-height: 64px;
+  padding: var(--s-4) 0 var(--s-5);
+  color: var(--text);
+  border-radius: var(--r-sm);
+}
+
+.events__more-text {
+  grid-area: text;
+  font-weight: 500;
+  font-size: var(--fs-body);
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.events__more-handle {
+  grid-area: handle;
+  white-space: nowrap;
+}
+
+.events__more-arrow {
+  grid-area: arrow;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -13px;
+  color: var(--accent-signal);
+}
+
+.events__more-arrow svg {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+/* The rule draws once on entry; the ink line sweeps over it on hover and focus. */
+.events__more-rule,
+.events__more-ink {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+}
+
+.events__more-rule {
+  transform-origin: left center;
+}
+
+.events__more-ink {
+  height: 1px;
+  background: var(--accent-signal);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.events__more-link:focus-visible .events__more-ink {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+@media (hover: hover) {
+  .events__more-link:hover .events__more-ink {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+  .events__more-link:hover .events__more-arrow svg {
+    transform: translate(3px, -3px);
+  }
+}
+
+@media (max-width: 767px) {
+  .events__ticket {
+    margin-top: var(--s-8);
+  }
+
+  .events__more {
+    margin-top: var(--s-10);
+  }
+
+  .events__more-link {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'text arrow'
+      'handle arrow';
+    column-gap: var(--s-4);
+  }
+
+  .events__more-arrow {
+    margin-right: -10px;
+  }
+}

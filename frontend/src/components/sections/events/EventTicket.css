@@ -1,0 +1,400 @@
+/* The ticket shape, tear line and notches come from ui/Card.css. */
+
+.event-ticket {
+  --fs-event-title: clamp(1.9rem, 3.6vw, 3.25rem);
+  --fs-event-day: clamp(3.5rem, 2.4rem + 3cqi, 4.5rem);
+  --fs-event-day-sm: 2.75rem;
+  --event-pad-main: 36px;
+  --event-pad-stub: 28px;
+  --event-stamp-angle: -7deg;
+
+  /* The sheen is drawn separately in each half. --sheen-w/from/to below are
+     scaled to each half's width (70% and 30%) so both pieces line up as one band. */
+  --event-sheen-dur: 1150ms;
+  --event-sheen-delay: 1250ms;
+}
+
+/* Main */
+.event-ticket__main {
+  --sheen-w: 57.143%;
+  --sheen-from: -100%;
+  --sheen-to: 250%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-4);
+  padding: var(--event-pad-main);
+  min-width: 0;
+  isolation: isolate;
+}
+
+.event-ticket__main::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--brand-gradient-soft);
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+.event-ticket__chip {
+  display: inline-flex;
+}
+
+.event-ticket__title {
+  margin: 0;
+  font-size: var(--fs-event-title);
+}
+
+.event-ticket__desc {
+  margin: 0;
+  max-width: 58ch;
+}
+
+.event-ticket__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-3);
+  margin: 0;
+  color: var(--text);
+  text-transform: uppercase;
+}
+
+.event-ticket__meta-group {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.event-ticket__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.event-ticket__meta-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  line-height: 0;
+  color: var(--text-muted);
+}
+
+.event-ticket__meta-sep {
+  color: var(--text-muted);
+}
+
+.event-ticket__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.event-ticket__tag {
+  display: inline-flex;
+  transform-origin: left center;
+}
+
+.event-ticket__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3) var(--s-6);
+  width: 100%;
+  margin-top: var(--s-3);
+}
+
+.event-ticket__magnet {
+  display: inline-flex;
+}
+
+/* Minimum touch target. */
+.event-ticket__actions .btn--ghost {
+  min-height: 44px;
+}
+
+/* Stub */
+.event-ticket__stub {
+  --sheen-w: 133.333%;
+  --sheen-from: -275%;
+  --sheen-to: 75%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr);
+  gap: var(--s-4);
+  padding: var(--event-pad-stub);
+  min-width: 0;
+  isolation: isolate;
+}
+
+.event-ticket__stub::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-image: var(--dots-fine);
+  background-size: var(--dot-cell) var(--dot-cell);
+  opacity: 0.8;
+  -webkit-mask-image: linear-gradient(200deg, transparent 40%, #000 100%);
+  mask-image: linear-gradient(200deg, transparent 40%, #000 100%);
+  pointer-events: none;
+}
+
+/* display: block so clip-path and transforms apply. */
+.event-ticket__admit {
+  display: block;
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  white-space: nowrap;
+}
+
+.event-ticket__stub-body {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  min-width: 0;
+}
+
+.event-ticket__date {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  align-self: flex-start;
+  transform-origin: 30% 40%;
+}
+
+.event-ticket__day,
+.event-ticket__month {
+  display: block;
+}
+
+.event-ticket__day {
+  /* Optical alignment: cancels the glyph's side bearing. */
+  margin-left: -0.04em;
+  font-size: var(--fs-event-day);
+  font-stretch: var(--wd-display);
+  line-height: 0.84;
+  letter-spacing: -0.02em;
+}
+
+.event-ticket__month {
+  color: var(--text-2);
+}
+
+.event-ticket__tminus,
+.event-ticket__serial {
+  margin: 0;
+}
+
+.event-ticket__tminus {
+  text-transform: uppercase;
+}
+
+.event-ticket__qr-wrap {
+  margin-top: auto;
+  padding-top: var(--s-4);
+}
+
+.event-ticket__qr {
+  --qr-size: min(100%, 132px);
+}
+
+/* Stamp: shares the body's grid cell and lands beside the date, clear of the QR code. */
+.event-ticket__stamp {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  justify-self: end;
+  margin: var(--s-10) var(--s-1) 0 0;
+  transform: rotate(var(--event-stamp-angle));
+  pointer-events: none;
+}
+
+.event-ticket__stamp-ink {
+  display: block;
+  padding: 7px 9px 6px 11px;
+  border: 1px solid var(--accent-signal);
+  border-radius: var(--r-sm);
+  color: var(--accent-signal);
+  letter-spacing: 0.2em;
+  white-space: nowrap;
+}
+
+/* Sheen */
+.event-ticket__sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.event-ticket__sheen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--sheen-w);
+  background: var(--foil);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform: translateX(var(--sheen-from));
+}
+
+.event-ticket--printed .event-ticket__sheen::before {
+  animation: event-ticket-sheen var(--event-sheen-dur) var(--ease-in-out) var(--event-sheen-delay) 1 both;
+}
+
+@keyframes event-ticket-sheen {
+  0% {
+    opacity: 0;
+    transform: translateX(var(--sheen-from));
+  }
+  14%,
+  82% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--sheen-to));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-ticket__sheen {
+    display: none;
+  }
+}
+
+/* Stacked layout */
+@container (max-width: 640px) {
+  .event-ticket__main,
+  .event-ticket__stub {
+    --sheen-w: 70%;
+    --sheen-from: -100%;
+    --sheen-to: 143%;
+  }
+
+  .event-ticket__main {
+    padding: var(--s-6);
+  }
+
+  .event-ticket__stub {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    column-gap: var(--s-3);
+    row-gap: var(--s-5);
+    padding: var(--s-5);
+  }
+
+  .event-ticket__stub::before {
+    -webkit-mask-image: linear-gradient(170deg, transparent 30%, #000 100%);
+    mask-image: linear-gradient(170deg, transparent 30%, #000 100%);
+  }
+
+  .event-ticket__admit {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    align-self: center;
+    writing-mode: horizontal-tb;
+    white-space: normal;
+    line-height: 1.3;
+  }
+
+  .event-ticket__stamp {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    margin: 0;
+    --event-stamp-angle: -5deg;
+  }
+
+  .event-ticket__stub-body {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'date qr'
+      'tminus qr'
+      'serial qr';
+    align-items: end;
+    column-gap: var(--s-4);
+    row-gap: var(--s-4);
+  }
+
+  .event-ticket__date {
+    grid-area: date;
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--s-2);
+    transform-origin: left center;
+  }
+
+  .event-ticket__day {
+    font-size: var(--fs-event-day-sm);
+  }
+
+  .event-ticket__tminus {
+    grid-area: tminus;
+  }
+
+  .event-ticket__serial {
+    grid-area: serial;
+  }
+
+  .event-ticket__qr-wrap {
+    grid-area: qr;
+    align-self: end;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .event-ticket__qr {
+    --qr-size: 104px;
+  }
+
+  .event-ticket__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-2);
+  }
+
+  .event-ticket__meta-sep {
+    display: none;
+  }
+
+  .event-ticket__actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--s-3);
+  }
+
+  .event-ticket__magnet {
+    display: flex;
+  }
+
+  .event-ticket__actions .btn {
+    --btn-h: 48px;
+    width: 100%;
+  }
+
+  .event-ticket__actions .btn--ghost {
+    min-height: 48px;
+  }
+}
