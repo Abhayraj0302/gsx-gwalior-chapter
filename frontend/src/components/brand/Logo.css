@@ -1,0 +1,31 @@
+.logo--lobes {
+  overflow: visible;
+}
+
+.logo__lobe {
+  /* Every lobe transforms around the centre of the mark, not its own box. */
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  transition: transform var(--dur-slow) var(--ease-out);
+  transition-delay: calc(var(--lobe-i) * 40ms);
+}
+
+@media (hover: hover) {
+  a:hover .logo--bloom .logo__lobe,
+  button:hover .logo--bloom .logo__lobe,
+  .logo-host:hover .logo--bloom .logo__lobe {
+    /* view-box units, so the offset scales with the rendered size */
+    transform: translate(calc(var(--lobe-x) * 5px), calc(var(--lobe-y) * 5px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo__lobe {
+    transition: none;
+  }
+  a:hover .logo--bloom .logo__lobe,
+  button:hover .logo--bloom .logo__lobe,
+  .logo-host:hover .logo--bloom .logo__lobe {
+    transform: none;
+  }
+}
