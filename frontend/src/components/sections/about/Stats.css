@@ -1,0 +1,264 @@
+/* Matches the ledger in ui/Card.css, but each rule is drawn separately.
+   The --stats-* timing properties are set from Stats.tsx; --i is the cell index. */
+
+.stats {
+  --stats-rule-dur: 800ms;
+  position: relative;
+  padding-block: var(--s-8);
+}
+
+.stats::before,
+.stats::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--rule);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--stats-rule-dur) var(--ease-in-out);
+  pointer-events: none;
+}
+.stats::before {
+  top: 0;
+}
+.stats::after {
+  bottom: 0;
+  transition-delay: calc(var(--stats-start, 0.3s) + var(--stats-count, 0.9s));
+}
+.stats--drawn::before,
+.stats--drawn::after {
+  transform: scaleX(1);
+}
+
+/* End ticks on both rules. */
+.stats__cells::before,
+.stats__cells::after {
+  content: '';
+  position: absolute; /* against .stats: .stats__cells is not positioned */
+  top: -3px;
+  bottom: -3px;
+  width: 1px;
+  border-top: 7px solid var(--rule);
+  border-bottom: 7px solid var(--rule);
+  opacity: 0;
+  transition: opacity var(--dur-med) var(--ease-out);
+  pointer-events: none;
+}
+.stats__cells::before {
+  left: 0;
+}
+.stats__cells::after {
+  right: 0;
+  transition-delay: calc(var(--stats-rule-dur) - 200ms);
+}
+.stats--drawn .stats__cells::before,
+.stats--drawn .stats__cells::after {
+  opacity: 1;
+}
+
+/* The last column is wider for the date. */
+.stats__cells {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 1.5fr);
+  margin: 0;
+}
+
+/* dt comes first in the DOM so screen readers read "Members 60+"; order puts
+   the figure on top visually. */
+.stats__cell {
+  /* Must be declared here: var(--i) resolves where the property is set. */
+  --stats-cell-delay: calc(var(--stats-start, 0.3s) + var(--i, 0) * var(--stats-step, 0.11s));
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding-inline: var(--s-6);
+}
+.stats__cell:first-child {
+  padding-left: 0;
+}
+.stats__cell:last-child {
+  padding-right: 0;
+}
+
+.stats__cell + .stats__cell::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--rule);
+  transform: scaleY(0);
+  transform-origin: center top;
+  transition: transform 520ms var(--ease-out) calc(var(--stats-cell-delay) - 120ms);
+}
+.stats--drawn .stats__cell::before {
+  transform: scaleY(1);
+}
+
+/* Figure */
+.stats__figure {
+  order: 1;
+  margin: 0;
+  color: var(--text);
+  font-size: calc(var(--fs-stat) * 1.2);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 320ms var(--ease-out) var(--stats-cell-delay);
+}
+.stats__figure--text {
+  letter-spacing: -0.02em;
+}
+
+/* Separate element so the hover transform does not clash with anything else. */
+.stats__shift {
+  display: inline-block;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.stats__count,
+.stats__suffix {
+  display: inline;
+  font-variant-numeric: tabular-nums;
+}
+.stats__suffix {
+  color: var(--primary-soft);
+}
+
+.stats__print {
+  display: inline-block;
+  clip-path: inset(-0.1em 100% -0.1em -0.1em);
+  transition: clip-path var(--stats-count, 0.9s) var(--ease-in-out) var(--stats-cell-delay);
+}
+.stats--drawn .stats__print {
+  clip-path: inset(-0.1em -0.1em -0.1em -0.1em);
+}
+
+.stats__underline {
+  display: block;
+  width: 24px;
+  height: 2px;
+  margin-top: var(--s-4);
+  background: var(--accent-signal);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--stats-underline, 0.3s) var(--ease-out)
+    calc(var(--stats-cell-delay) + var(--stats-count, 0.9s) - 80ms);
+}
+
+/* Label and note */
+.stats__label {
+  order: 2;
+  margin-top: var(--s-4);
+  opacity: 0;
+  transition:
+    opacity 320ms var(--ease-out) calc(var(--stats-cell-delay) + 80ms),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.stats__note {
+  order: 3;
+  margin: var(--s-2) 0 0;
+  max-width: 24ch;
+  opacity: 0;
+  transition: opacity 320ms var(--ease-out) calc(var(--stats-cell-delay) + 160ms);
+}
+
+.stats--drawn .stats__figure,
+.stats--drawn .stats__label,
+.stats--drawn .stats__note {
+  opacity: 1;
+}
+.stats--drawn .stats__underline {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .stats__cell:hover .stats__shift {
+    transform: translateX(4px);
+  }
+  .stats__cell:hover .stats__label {
+    color: var(--text);
+  }
+}
+
+@media (max-width: 1023px) {
+  .stats {
+    padding-block: var(--s-6);
+  }
+  .stats__cells {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .stats__cell:nth-child(2n + 1) {
+    padding-left: 0;
+  }
+  .stats__cell:nth-child(2n + 1)::before {
+    display: none;
+  }
+  .stats__cell:nth-child(2n) {
+    padding-right: 0;
+  }
+  .stats__cell:nth-child(-n + 2) {
+    padding-bottom: var(--s-6);
+  }
+  .stats__cell:nth-child(n + 3) {
+    padding-top: var(--s-6);
+  }
+  .stats__cell:nth-child(n + 3)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--rule);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 400ms linear calc(var(--stats-start, 0.3s) + 200ms);
+  }
+  /* An odd cell out (the date) takes the whole last row. */
+  .stats__cell:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+  .stats--drawn .stats__cell:nth-child(n + 3)::after {
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 767px) {
+  .stats__figure {
+    font-size: 2rem;
+  }
+  .stats__cell {
+    padding-inline: var(--s-4);
+  }
+}
+
+/* The date overflows its cell at 2rem on small phones; scale all figures
+   together so they stay level. */
+@media (max-width: 479px) {
+  .stats__figure {
+    font-size: clamp(1.375rem, 7.25vw, 2rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stats::before,
+  .stats::after,
+  .stats__cells::before,
+  .stats__cells::after,
+  .stats__cell::before,
+  .stats__cell::after,
+  .stats__figure,
+  .stats__label,
+  .stats__note,
+  .stats__print,
+  .stats__underline,
+  .stats__shift {
+    transition: none !important;
+  }
+}

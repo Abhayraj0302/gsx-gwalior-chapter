@@ -1,0 +1,113 @@
+.features {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+}
+
+.features__col {
+  position: relative;
+  min-width: 0;
+  padding-top: var(--s-5);
+}
+
+.features__rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--rule);
+  transform-origin: left center;
+}
+
+.features__col::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary-soft);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-med) var(--ease-out);
+  pointer-events: none;
+}
+
+.features__head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-8);
+}
+
+.features__num {
+  display: inline-block;
+  letter-spacing: 0.12em;
+  color: var(--accent-signal);
+  font-variant-numeric: tabular-nums;
+}
+
+.features__title {
+  max-width: 11em;
+  text-wrap: balance;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.features__desc {
+  margin-top: var(--s-3);
+  max-width: 32ch;
+}
+
+@media (hover: hover) {
+  .features__col:hover::after {
+    transform: scaleX(1);
+  }
+  .features__col:hover .features__title {
+    transform: translateX(4px);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--s-10);
+  }
+  .features__head {
+    gap: var(--s-5);
+  }
+  .features__desc {
+    max-width: 40ch;
+  }
+}
+
+@media (max-width: 767px) {
+  .features {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .features__col {
+    padding-block: var(--s-5);
+  }
+  .features__col:last-child {
+    padding-bottom: 0;
+  }
+  .features__head {
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--s-4);
+  }
+  .features__title {
+    max-width: none;
+  }
+  .features__desc {
+    max-width: 46ch;
+    margin-top: var(--s-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .features__col::after,
+  .features__title {
+    transition: none;
+  }
+}

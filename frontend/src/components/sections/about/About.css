@@ -1,0 +1,153 @@
+.about__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.about__grid {
+  align-items: start;
+}
+
+/* Headline */
+.about__title {
+  grid-column: 1 / 10;
+  /* Optical alignment with the section label's bracket. */
+  margin-left: -0.035em;
+}
+
+/* Sits inside the word's mask slot; the slot's bottom padding gives it room. */
+.about__underline {
+  position: absolute;
+  left: 0.03em;
+  right: 0.2em; /* stops short of the full stop */
+  bottom: -0.085em;
+  height: max(2px, 0.05em);
+  background: var(--accent-signal);
+  transform-origin: left center;
+}
+
+/* Copy */
+.about__copy {
+  grid-column: 1 / -1;
+  margin-top: var(--s-10);
+}
+
+.about__columns {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  row-gap: var(--s-8);
+}
+
+.about__para {
+  position: relative;
+  padding-top: var(--s-5);
+}
+.about__para::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--rule-soft);
+}
+.about__para::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 1px;
+  background: var(--primary-soft);
+}
+
+.about__para--lead {
+  grid-column: 1 / 6;
+}
+.about__para--lead::after {
+  background: var(--accent-signal);
+}
+.about__para--col:nth-child(2) {
+  grid-column: 7 / 10;
+}
+.about__para--col:nth-child(3) {
+  grid-column: 10 / 13;
+}
+
+.about__runin {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.about__para--col {
+  font-size: var(--fs-small);
+  line-height: 1.62;
+}
+
+.about__ledger {
+  margin-top: clamp(var(--s-16), 8vw, var(--s-24));
+}
+
+.about__features {
+  margin-top: clamp(var(--s-12), 6vw, var(--s-16));
+}
+
+/* Halftone gutter, only rendered at 1280px and up */
+.about__gutter {
+  position: absolute;
+  top: var(--s-16);
+  bottom: var(--s-16);
+  right: 0;
+  left: calc(50% + var(--container) / 2 - 200px);
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, rgb(0 0 0 / 0.22) 45%, black 80%),
+    linear-gradient(to bottom, transparent 0%, black 16%, black 78%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, rgb(0 0 0 / 0.22) 45%, black 80%),
+    linear-gradient(to bottom, transparent 0%, black 16%, black 78%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.about__dots {
+  position: absolute;
+  inset: -40px 0;
+  will-change: transform;
+}
+
+@media (max-width: 1023px) {
+  .about__title {
+    grid-column: 1 / -1;
+  }
+  .about__para--lead {
+    grid-column: 1 / -1;
+    max-width: 36em;
+  }
+  .about__para--col:nth-child(2) {
+    grid-column: 1 / 7;
+  }
+  .about__para--col:nth-child(3) {
+    grid-column: 7 / 13;
+  }
+}
+
+@media (max-width: 639px) {
+  .about__columns {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--s-6);
+  }
+  .about__copy {
+    margin-top: var(--s-8);
+  }
+  .about__para--lead,
+  .about__para--col:nth-child(2),
+  .about__para--col:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+  .about__para--col {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+}
