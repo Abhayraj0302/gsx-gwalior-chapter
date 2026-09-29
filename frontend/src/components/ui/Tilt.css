@@ -1,0 +1,34 @@
+.tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.tilt--static {
+  transform: none;
+  will-change: auto;
+}
+
+.tilt__spot,
+.tilt__foil {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-med) var(--ease-out);
+  z-index: 2;
+}
+
+.tilt__foil {
+  background-image: var(--foil);
+  background-size: 220% 220%;
+  mix-blend-mode: screen;
+}
+
+@media (hover: hover) {
+  .tilt:hover .tilt__spot,
+  .tilt:hover .tilt__foil {
+    opacity: 1;
+  }
+}

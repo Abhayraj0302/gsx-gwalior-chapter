@@ -1,0 +1,20 @@
+.wr__line {
+  display: block;
+}
+
+/* The mask. Padding keeps descenders and the underline inside the clip. */
+.wr__slot {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+  white-space: pre;
+}
+
+.wr__word {
+  display: inline-block;
+  position: relative;
+  transform-origin: 0% 100%;
+  will-change: transform;
+}
