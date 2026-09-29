@@ -1,0 +1,13 @@
+/* The canvas fills its positioned parent and never takes input. */
+.hero-scene {
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+}
+
+.hero-scene canvas {
+  display: block;
+  pointer-events: none;
+}
