@@ -1,0 +1,13 @@
+{
+  "name": "gsx-gwalior-chapter",
+  "private": true,
+  "description": "GSX Gwalior Chapter, MITS-DU: website frontend and backend",
+  "scripts": {
+    "setup": "npm --prefix frontend install",
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "lint": "npm --prefix frontend run lint",
+    "typecheck": "npm --prefix frontend run typecheck"
+  }
+}

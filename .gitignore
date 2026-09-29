@@ -1,0 +1,21 @@
+# Dependencies and build output, in any package
+node_modules/
+dist/
+build/
+coverage/
+
+# Environment files. Commit a .env.example with the variable names instead.
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
