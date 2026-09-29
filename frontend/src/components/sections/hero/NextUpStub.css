@@ -1,0 +1,94 @@
+/* Placement is set by the parent through its own class. */
+.nextup {
+  /* (44px hit area - one 18px line) / 2 */
+  --nextup-pad: 13px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0 var(--s-2);
+  min-height: 44px;
+  /* --text-muted lacks contrast on the hero background. */
+  color: var(--text-2);
+}
+
+.nextup__link {
+  display: block;
+  padding-block: var(--nextup-pad);
+  color: var(--text-2);
+  border-radius: var(--r-sm);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.nextup__prefix {
+  text-transform: uppercase;
+  color: var(--text);
+}
+/* Underline so the link is not signalled by colour alone (WCAG 1.4.1). */
+.nextup__title {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-decoration-thickness var(--dur-fast) var(--ease-out);
+}
+.nextup__when {
+  text-transform: uppercase;
+}
+.nextup__sep {
+  color: var(--text-2);
+}
+.nextup .nextup__register {
+  display: inline-flex;
+  align-items: center;
+  padding-block: var(--nextup-pad);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+
+@media (hover: hover) {
+  .nextup__link:hover {
+    color: var(--text);
+  }
+  .nextup__link:hover .nextup__title {
+    text-decoration-thickness: 2px;
+  }
+}
+
+@media (max-width: 767px) {
+  .nextup {
+    --nextup-pad: var(--s-3); /* 42px inner + 2px border = 44px */
+    flex-wrap: nowrap;
+    width: 100%;
+    padding: 0 var(--s-3);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-sm);
+    background: color-mix(in oklab, var(--bg-2) 70%, transparent);
+  }
+  /* The gap replaces the middle dot so a wrapped row never starts with "·". */
+  .nextup__link {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
+    min-width: 0;
+    column-gap: var(--s-3);
+    row-gap: 2px;
+  }
+  .nextup__when {
+    white-space: nowrap;
+  }
+  .nextup__dot,
+  .nextup__sep {
+    display: none;
+  }
+  .nextup .nextup__register {
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 479px) {
+  .nextup__time {
+    display: none;
+  }
+}

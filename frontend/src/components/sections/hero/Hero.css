@@ -1,0 +1,309 @@
+/* `.section.hero` so the padding wins over `.section--flush` by specificity
+   rather than stylesheet order. */
+.section.hero {
+  --hero-pt: calc(var(--nav-h) + 48px);
+  /* Matches ARC_RISE in Hero.tsx. */
+  --hero-arc: 156px;
+  --hero-pb: 16px;
+  --hero-rim-gap: 28px;
+  --hero-scrim: 72%;
+  position: relative;
+  display: grid;
+  align-content: end;
+  min-height: 100svh;
+  padding-top: var(--hero-pt);
+  padding-bottom: var(--hero-pb);
+  background: var(--bg-2) var(--brand-gradient);
+  overflow: clip;
+}
+
+/* Background layers */
+.hero__layers {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero__dots {
+  position: absolute;
+  inset: 0;
+}
+.hero__dots--fine {
+  opacity: 0.7;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 46%);
+  mask-image: linear-gradient(to top, #000 0%, transparent 46%);
+}
+.hero__dots--coarse {
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(60% 34% at 78% 100%, #000 0%, transparent 100%);
+  mask-image: radial-gradient(60% 34% at 78% 100%, #000 0%, transparent 100%);
+}
+
+/* Flatter than the shared arc so the rim stays above the ledger row across
+   the full width. */
+.hero__arc {
+  z-index: 1;
+}
+.hero .hero__arc .horizon__planet {
+  width: max(5200px, 360vw);
+  background: radial-gradient(closest-side, var(--bg-2) 98.6%, var(--primary-deep) 100%);
+}
+
+.hero__scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Keeps the copy readable where the 3D mark's highlights drift behind it. */
+.hero__scrim {
+  position: absolute;
+  inset: 0 0 var(--hero-arc) 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--bg-2) var(--hero-scrim), transparent) 0%,
+    color-mix(in oklab, var(--bg-2) 46%, transparent) 34%,
+    transparent 62%
+  );
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 72%, transparent 100%);
+}
+
+/* Layout */
+.hero__inner {
+  position: relative;
+  z-index: 3;
+  align-content: end;
+  row-gap: 0;
+}
+
+.hero__content {
+  grid-column: 1 / span 6;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hero__plate {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  will-change: transform, opacity;
+}
+
+/* Index line */
+.hero-index {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  width: 100%;
+  margin-bottom: var(--s-6);
+  color: var(--text-muted);
+}
+.hero-index__label {
+  white-space: nowrap;
+}
+.hero-index__text {
+  text-transform: uppercase;
+}
+.hero-index__line {
+  flex: 1 1 auto;
+  transform-origin: left center;
+}
+
+/* Title */
+.hero__title {
+  margin: 0;
+  font: inherit;
+}
+.hero__nameplate {
+  display: block;
+  font-kerning: normal;
+  font-feature-settings: 'kern' 1;
+}
+/* Padding offset by negative margins keeps letter overshoot inside the clip
+   while the words slide up. */
+.hero__slot {
+  display: block;
+  overflow: hidden;
+  overflow: clip;
+  padding: 6px 4px 3px;
+  margin: -6px -4px -3px;
+}
+.hero__rise {
+  display: block;
+  will-change: transform;
+}
+.hero__title-top,
+.hero__title .hero__title-bottom {
+  display: block;
+  text-shadow: none;
+}
+.hero__title .hero__title-bottom {
+  color: var(--primary-display);
+  margin-top: 0.06em;
+}
+
+/* Body and CTAs */
+.hero__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+.hero__meta {
+  margin-top: var(--s-5);
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.hero__lead {
+  max-width: 46ch;
+  margin-top: var(--s-4);
+  color: var(--text);
+}
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  margin-top: var(--s-8);
+}
+.hero__cta-cell,
+.hero__cta-wrap {
+  display: inline-flex;
+}
+.hero__ctas .hero__cta--primary {
+  border-color: color-mix(in oklab, var(--primary-soft) 55%, var(--primary));
+}
+.hero__ctas .hero__cta--secondary {
+  border-color: color-mix(in oklab, var(--text) 38%, transparent);
+  background: color-mix(in oklab, var(--bg-2) 35%, transparent);
+}
+@media (hover: hover) {
+  .hero__ctas .hero__cta--secondary:hover {
+    background: var(--ghost-hover-bg);
+    border-color: var(--ghost-hover-border);
+  }
+}
+
+/* Ledger row. 44px is the row height; the copy ends --hero-rim-gap above
+   the rim. */
+.hero__horizon {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  margin-top: calc(var(--hero-arc) + var(--hero-rim-gap) - var(--hero-pb) - 44px);
+}
+.hero__horizon-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  min-height: 44px;
+}
+
+.hero__map {
+  display: none;
+  margin-left: auto;
+}
+
+/* Responsive */
+@media (min-width: 1024px) {
+  .hero__map {
+    display: block;
+  }
+}
+
+/* Short laptop screens */
+@media (min-width: 768px) and (max-height: 820px) {
+  .section.hero {
+    --hero-pt: calc(var(--nav-h) + 24px);
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero__content {
+    grid-column: 1 / -1;
+  }
+  /* No upcoming event: hide the empty row. */
+  .hero__horizon-row:not(:has(.hero__nextup)) {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .section.hero {
+    --hero-arc: 96px;
+    --hero-pb: 12px;
+    --hero-rim-gap: 24px;
+    --hero-scrim: 80%;
+  }
+  /* HorizonArc sets its rise to 64px on phones, which is too short for the ledger. */
+  .hero .hero__arc {
+    --horizon-rise: var(--hero-arc) !important;
+  }
+  .hero .hero__arc .horizon__planet {
+    width: max(2400px, 500vw);
+  }
+  .hero__dots--coarse {
+    display: none;
+  }
+  /* The copy sits below the mark on phones, so the scrim runs vertically. */
+  .hero__scrim {
+    inset: 0 0 var(--hero-arc) 0;
+    background: linear-gradient(
+      180deg,
+      transparent 8%,
+      color-mix(in oklab, var(--bg-2) var(--hero-scrim), transparent) 30%,
+      color-mix(in oklab, var(--bg-2) var(--hero-scrim), transparent) 78%,
+      transparent 100%
+    );
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .hero__title .hero__title-bottom {
+    font-size: clamp(4rem, min(27vw, 17svh), 7.5rem);
+  }
+  .hero__title-top {
+    font-size: clamp(2.2rem, min(13vw, 9svh), 3.75rem);
+  }
+  .hero__horizon-row {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 479px) {
+  .hero__ctas {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  .hero__cta-cell,
+  .hero__cta-wrap {
+    display: flex;
+    width: 100%;
+  }
+  .hero__ctas .hero__cta {
+    --btn-h: 48px;
+    width: 100%;
+  }
+}
+
+/* Landscape phones */
+@media (max-height: 499px) and (orientation: landscape) {
+  .section.hero {
+    --hero-pt: calc(var(--nav-h) + 24px);
+    --hero-arc: 96px;
+    --hero-rim-gap: 20px;
+    min-height: auto;
+  }
+  .hero .hero__arc {
+    --horizon-rise: var(--hero-arc) !important;
+  }
+}

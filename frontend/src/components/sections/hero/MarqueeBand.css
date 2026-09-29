@@ -1,0 +1,93 @@
+.band {
+  --band-rule-top: color-mix(in oklab, var(--primary-soft) 55%, transparent);
+  --band-rule-bottom: color-mix(in oklab, var(--primary-deep) 80%, transparent);
+  --band-h: 44px;
+  --band-fs: var(--fs-meta);
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(--band-h);
+  background: var(--primary);
+  border-top: 1px solid var(--band-rule-top);
+  border-bottom: 1px solid var(--band-rule-bottom);
+  color: var(--text);
+}
+
+.band__marquee {
+  width: 100%;
+}
+
+.band__item {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: var(--band-fs);
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.band__sep {
+  color: var(--text);
+  opacity: 0.7;
+  margin-inline: var(--s-6);
+}
+
+.band__pause {
+  position: absolute;
+  top: 50%;
+  right: var(--s-1);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  transform: translateY(-50%);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  opacity: 0.6;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+.band__pause svg {
+  width: 14px;
+  height: 14px;
+}
+.band__pause:focus-visible,
+.band[data-paused] .band__pause {
+  opacity: 1;
+}
+@media (hover: hover) {
+  .band__pause:hover {
+    opacity: 1;
+  }
+}
+
+/* Hover pause lives in ui/Marquee.css. */
+.band:focus-within .marquee__track,
+.band[data-paused] .marquee__track {
+  animation-play-state: paused;
+}
+
+@media (max-width: 767px) {
+  .band {
+    --band-h: 40px;
+    --band-fs: 0.75rem;
+  }
+}
+
+/* ui/Marquee.css already stops and wraps the track; let the band grow to fit. */
+@media (prefers-reduced-motion: reduce) {
+  .band {
+    height: auto;
+    min-height: var(--band-h);
+    padding-block: var(--s-3);
+  }
+  .band .marquee__list {
+    justify-content: center;
+  }
+  .band__pause {
+    display: none;
+  }
+}

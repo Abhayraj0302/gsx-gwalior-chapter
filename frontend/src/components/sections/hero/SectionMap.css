@@ -1,0 +1,55 @@
+.section-map__list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.section-map__item {
+  display: inline-flex;
+  align-items: center;
+}
+/* --text-2 is the lowest contrast that reads on the hero background. */
+.section-map__item + .section-map__item::before {
+  content: '·';
+  color: var(--text-2);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  margin-inline: var(--s-1);
+}
+
+.section-map__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  padding: 0 var(--s-2);
+  border-radius: var(--r-sm);
+}
+
+.section-map__num {
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.section-map__label {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    text-decoration-color var(--dur-fast) var(--ease-out);
+}
+.section-map__link:focus-visible .section-map__num {
+  color: var(--accent-signal);
+}
+
+@media (hover: hover) {
+  .section-map__link:hover .section-map__num {
+    color: var(--accent-signal);
+  }
+  .section-map__link:hover .section-map__label {
+    text-decoration-color: var(--accent-signal);
+  }
+}
